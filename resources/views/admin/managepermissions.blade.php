@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 <a href="{{route('dash')}}">◀ Dashboard</a><br>
 <h1 class="ui huge header">Manage Permissions</h1>
 <div class="ui stackable three column grid">
@@ -197,4 +199,6 @@
     })
 
 </script>
+</div>
+</div>
 @endsection

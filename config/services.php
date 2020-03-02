@@ -35,4 +35,10 @@ return [
         'client_secret' => env('REDDIT_SECRET'),
         'redirect' => env('REDDIT_REDIRECT_URI')
     ],
+
+    'discord' => [
+        'webhooks' => [
+            'discord_mods' => env('DISCORD_MOD_CHNL_WEBHOOK')
+        ]
+    ]
 ];

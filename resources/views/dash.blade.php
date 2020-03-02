@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'Dashboard - ')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 <h1 class="ui huge header">Dashboard</h1>
 <div class="ui card">
     <div class="content">
@@ -41,4 +43,6 @@
           @endrole
       </div>
   </div>
+</div>
+</div>
 @endsection

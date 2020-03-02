@@ -15,7 +15,7 @@ class Ban extends Model
     public function duration()
     {
         if (!$this->end_timestamp) return null;
-        return Carbon::create($this->end_timestamp)->diffInDays($this->start_timestamp);
+        return Carbon::parse($this->end_timestamp)->diffInDays($this->start_timestamp);
     }
 
     public function durationRemaining()
@@ -45,5 +45,13 @@ class Ban extends Model
     public function overturnModerator()
     {
         return $this->belongsTo(User::class, 'overturned_moderator_id');
+    }
+
+    function ordinal() {
+        $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+        if ((($this->strike_level % 100) >= 11) && (($this->strike_level%100) <= 13))
+            return $this->strike_level. 'th';
+        else
+            return $this->strike_level. $ends[$this->strike_level % 10];
     }
 }

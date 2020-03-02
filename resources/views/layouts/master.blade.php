@@ -26,13 +26,10 @@
         body > .grid {
           height: 100%;
         }
+
       </style>
 </head>
 <body>
-<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
-    <div class="eight column wide">
-        @yield('content')
-    </div>
-</div>
+    @yield('content')
 </body>
 </html>

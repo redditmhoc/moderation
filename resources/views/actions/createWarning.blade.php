@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 <a href="{{route('actions.viewallwarnings')}}">◀ View Warnings</a><br>
 <h1 class="ui header">Create Warning</h1>
 @if ($errors->any())
@@ -239,4 +241,6 @@
       </p>
     </div>
   </div>
+</div>
+</div>
 @endsection

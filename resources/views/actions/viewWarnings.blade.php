@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'View Warnings - ')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 @php
 function ordinal($number) {
     $ends = array('th','st','nd','rd','th','th','th','th','th','th');
@@ -43,4 +45,6 @@ function ordinal($number) {
     $('.table').DataTable();
     } );
 </script>
+</div>
+</div>
 @endsection

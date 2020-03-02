@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'Guidance and Templates - ')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 <a href="{{URL::previous()}}">◀ Go Back</a><br>
 <h1 class="ui header">Guidance and Templates</h1>
 <h4>Strike Lengths</h4>
@@ -205,4 +207,6 @@
   .accordion()
 ;
 </script>
+</div>
+</div>
 @endsection

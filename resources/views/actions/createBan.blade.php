@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 <a href="{{route('actions.viewallbans')}}">◀ View Bans</a><br>
 <h1 class="ui header">Create Ban</h1>
 @if ($errors->any())
@@ -233,4 +235,6 @@
     </div>
   </div>
 <script src="{{asset('js/create-action.js')}}"></script>
+</div>
+</div>
 @endsection

@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'Ban - '.$ban->reddit_username.' - ')
 @section('content')
+<div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
+<div class="eight column wide">
 @php
 function ordinal($number) {
     $ends = array('th','st','nd','rd','th','th','th','th','th','th');
@@ -403,6 +405,8 @@ function ordinal($number) {
             </script>
         </div>
     </div>
+</div>
+</div>
 </div>
 @endcan
 @endsection
