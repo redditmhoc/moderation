@@ -1,10 +1,13 @@
 @extends('layouts.master')
 @section('content')
+
 <div class="ui middle aligned center aligned grid">
     <div class="five wide column">
         <div class="ui fluid card">
             <div class="content">
-                <h1 class="ui huge header">MHoC Speakership</h1>
+                <h1 class="ui huge header">MHoC Speakership
+                    <div class="sub header">Submit legislation and more</div>
+                </h1>
                 @auth
                     <p>Hi, {{Auth::user()->username}}!</p>
                     @can('access')

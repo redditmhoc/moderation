@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Moderation;
 
 use App\Models\Actions\Ban;
 use App\Models\Actions\Warning;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class ActionsController extends Controller
+class ActionsController extends \App\Http\Controllers\Controller
 {
     public function createBan()
     {

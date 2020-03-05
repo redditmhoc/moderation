@@ -21,7 +21,7 @@
     <script src="{{asset('js/utility.js')}}"></script>
     <style type="text/css">
         body {
-          background-color: #DADADA;
+          background-color: #ededed;
         }
         body > .grid {
           height: 100%;
