@@ -8,7 +8,7 @@ class ViewsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:access']);
+        $this->middleware('auth');
     }
 
     public function dash()

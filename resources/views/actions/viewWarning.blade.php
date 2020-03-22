@@ -1,6 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Warning - '.$warning->reddit_username.' - ')
 @section('content')
+@include('layouts.navbar')
 <div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
 <div class="eight column wide">
 @php

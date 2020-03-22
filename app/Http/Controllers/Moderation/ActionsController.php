@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Moderation;
 
-use App\Models\Actions\Ban;
-use App\Models\Actions\Warning;
+use App\Models\Moderation\Actions\Ban;
+use App\Models\Moderation\Actions\Warning;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -88,8 +88,8 @@ class ActionsController extends \App\Http\Controllers\Controller
             "tts" => false,
             "embeds" => [
                 [
-                    "title" => $ban->ordinal().' Strike | '. $ban->reddit_username,
-                    "description" => "Banned by ".$ban->moderator->username.' at '.$ban->start_timestamp.' GMT until '.$ban->end_timestamp.' GMT ('. $ban->duration() . ' days) for '.$ban->reason.'.',
+                    "title" => $ban->permanent() ? 'Permanent Ban | ' .$ban->reddit_username : $ban->ordinal().' Strike | '. $ban->reddit_username,
+                    "description" => "Issued by ".$ban->moderator->username.' at '.$ban->start_timestamp.' GMT until '.$ban->end_timestamp.' GMT ('. $ban->duration() . ' days) for '.$ban->reason.'.',
                     "url" => route('actions.viewban', [$ban->reddit_username, $ban->id])
                 ]
             ]
@@ -143,6 +143,37 @@ class ActionsController extends \App\Http\Controllers\Controller
         $warning->timestamp = $request->get('timeDateIssued') ? $request->get('timeDateIssued') : Carbon::now();
 
         $warning->save();
+
+        //Discord mod chat notification
+        $hook = json_encode([
+            "content" => null,
+            "username" => "Moderation Bot",
+            "avatar_url" => "https://gexiii.lieselta.live/img/mhoc.png",
+            "tts" => false,
+            "embeds" => [
+                [
+                    "title" => 'Warning | '. $warning->reddit_username,
+                    "description" => "Issued by ".$warning->moderator->username.' at '.$warning->start_timestamp.' GMT (muted '.$warning->muted_minutes.' min) for '.$warning->reason.'.',
+                    "url" => route('actions.viewwarning', [$warning->reddit_username, $warning->id])
+                ]
+            ]
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+        $ch = curl_init();
+        curl_setopt_array( $ch, [
+            CURLOPT_URL => config('services.discord.webhooks.discord_mods'),
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $hook,
+            CURLOPT_HTTPHEADER => [
+                "Content-Type: application/json"
+            ]
+        ]);
+        $response = curl_exec($ch);
+        if (curl_error($ch)) {
+            $error = curl_error($ch);
+            Log::error($error);
+        }
+        curl_close($ch);
 
         return redirect()->route('actions.viewwarning', [$warning->reddit_username, $warning->id]);
     }

@@ -1,39 +1,40 @@
 @extends('layouts.master')
 @section('content')
+@include('layouts.navbar')
 <div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
 <div class="eight column wide">
 <a href="{{route('dash')}}">◀ Dashboard</a><br>
 <h1 class="ui huge header">Manage Permissions</h1>
-<div class="ui stackable three column grid">
+<div class="ui stackable two column grid">
     <div class="column">
-        <div class="ui fluid card">
-            <div class="content">
-                <div class="header">View User</div>
-                <br>
-                <div class="ui form">
-                    <form id="searchUserForm">
-                        @csrf
-                        <div class="field">
-                            <label for="">Search for a user</label>
-                            <div class="ui fluid search">
-                                <div class="ui icon input">
-                                    <input class="prompt" name="user" type="text" placeholder="Search users...">
-                                    <i class="search icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="ui message" id="searchUserMsg" style="display:none">
-                        <div class="header">
-                        </div>
-                        <p></p>
-                    </div>
-                    <br>
-                    <div id="searchUserResults"></div>
-                </div>
-            </div>
-        </div>
+        <h4 class="div header">Users</h4>
+        <table class="ui celled table">
+            <thead>
+                <th>Username</th>
+                <th>Roles</th>
+            </thead>
+            <tbody>
+                @foreach ($users as $u)
+                <tr>
+                    <td>{{$u->username}}</td>
+                    <td>
+                        @foreach($u->roles as $role)
+                        <span class="userTableRole{{$role->name}}{{$u->username}}">
+                        <i class="circle icon" style="color:{{$role->colour}}"></i> {{ucfirst($role->name)}} <a href="#" onclick="removeRole('{{$u->username}}', '{{$role->name}}')" class="removeRoleLink" data-content="Remove role"><span class="ui red text"><i class="times icon"></i></span></a>
+                        </span>
+                        @endforeach
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <script>
+        $(document).ready( function () {
+            $('.table').DataTable();
+            } );
+        </script>
     </div>
+
     <div class="column">
         <div class="ui fluid card">
             <div class="content">
@@ -119,7 +120,7 @@
             },
             success: function (data) {
                 alert('Removed role!')
-                $("#searchUserResultsRole"+role).remove()
+                $(".userTableRole"+role+name).remove()
             },
             error: function (data) {
                 alert('Error removing role: ' + data.responseJSON.message)

@@ -3,7 +3,7 @@
 <head>
     <!--Meta-->
     <meta charset="UTF-8">
-    <title>@yield('title')MHoC Moderation</title>
+    <title>@yield('title')MHoC Speakership  </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://commonslibrary.parliament.uk/wp-content/uploads/2016/08/Logo.png" type="image/x-icon">
     <meta name="csrf-token" content="{{csrf_token()}}">
@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/se/dt-1.10.18/datatables.min.js"></script>
     <script src="{{asset('js/utility.js')}}"></script>
+    <script src="{{asset('js/create-action.js')}}"></script>
     <style type="text/css">
         body {
           background-color: #ededed;

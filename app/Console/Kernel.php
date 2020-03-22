@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\Moderation\Actions\Ban;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,6 +28,13 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        /* $schedule->call(function () {
+            Log::info('Looking for completed strikes...');
+            $activeBans = Ban::cursor()->filter(function ($ban) {
+                return $ban->current() && !$ban->permanent() && !$ban->overturn;
+            })->sortByDesc('start_timestamp');
+            Log::info('Found '. count($activeBans) .' active bans.');
+        })->everyMinute(); */
     }
 
     /**

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    if (Auth::check() && Auth::user()->can('access')) {
+    if (Auth::check()) {
         return redirect()->route('dash');
     }
     return view('welcome');
@@ -28,19 +28,19 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/dash', 'ViewsController@dash')->name('dash');
-Route::view('/guidance', 'guidance')->name('guidance');
+Route::view('/guidance', 'guidance')->name('guidance')->middleware('permission:access');
 Route::prefix('actions')->group(function () {
-    Route::get('create/ban', 'ActionsController@createBan')->middleware('permission:create ban')->name('actions.createban');
-    Route::post('create/ban', 'ActionsController@createBanPost')->middleware('permission:create ban')->name('actions.createban.post');
-    Route::get('view/bans', 'ActionsController@viewAllBans')->middleware('permission:view actions')->name('actions.viewallbans');
-    Route::get('view/ban/{reddit_username}/{id}', 'ActionsController@viewBan')->middleware('permission:view actions')->name('actions.viewban');
-    Route::post('overturn/ban/{reddit_username}/{id}', 'ActionsController@overturnBan')->middleware('permission:overturn ban')->name('actions.overturnban');
-    Route::post('import/bans', 'ActionsController@importBansFromFile')->middleware('role:admin')->name('actions.importbans');
+    Route::get('create/ban', 'Moderation\ActionsController@createBan')->middleware('permission:create ban')->name('actions.createban');
+    Route::post('create/ban', 'Moderation\ActionsController@createBanPost')->middleware('permission:create ban')->name('actions.createban.post');
+    Route::get('view/bans', 'Moderation\ActionsController@viewAllBans')->middleware('permission:view actions')->name('actions.viewallbans');
+    Route::get('view/ban/{reddit_username}/{id}', 'Moderation\ActionsController@viewBan')->middleware('permission:view actions')->name('actions.viewban');
+    Route::post('overturn/ban/{reddit_username}/{id}', 'Moderation\ActionsController@overturnBan')->middleware('permission:overturn ban')->name('actions.overturnban');
+    Route::post('import/bans', 'Moderation\ActionsController@importBansFromFile')->middleware('role:admin')->name('actions.importbans');
 
-    Route::get('create/warning', 'ActionsController@createWarning')->middleware('permission:create warning')->name('actions.createwarning');
-    Route::post('create/warning', 'ActionsController@createWarningPost')->middleware('permission:create warning')->name('actions.createwarning.post');
-    Route::get('view/warnings', 'ActionsController@viewAllWarnings')->middleware('permission:view actions')->name('actions.viewallwarnings');
-    Route::get('view/warning/{reddit_username}/{id}', 'ActionsController@viewWarning')->middleware('permission:view actions')->name('actions.viewwarning');
+    Route::get('create/warning', 'Moderation\ActionsController@createWarning')->middleware('permission:create warning')->name('actions.createwarning');
+    Route::post('create/warning', 'Moderation\ActionsController@createWarningPost')->middleware('permission:create warning')->name('actions.createwarning.post');
+    Route::get('view/warnings', 'Moderation\ActionsController@viewAllWarnings')->middleware('permission:view actions')->name('actions.viewallwarnings');
+    Route::get('view/warning/{reddit_username}/{id}', 'Moderation\ActionsController@viewWarning')->middleware('permission:view actions')->name('actions.viewwarning');
 });
 
 Route::prefix('admin')->group(function () {
@@ -51,5 +51,5 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('utility')->group(function () {
-    Route::post('checkuserhistory', 'ActionsController@checkUserHistoryAjax')->middleware('permission:view actions')->name('utility.checkuserhistory');
+    Route::post('checkuserhistory', 'Moderation\ActionsController@checkUserHistoryAjax')->middleware('permission:view actions')->name('utility.checkuserhistory');
 });

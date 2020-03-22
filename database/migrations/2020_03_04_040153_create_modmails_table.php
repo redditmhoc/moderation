@@ -18,7 +18,9 @@ class CreateModmailsTable extends Migration
             $table->string('subject')->nullable();
             $table->longText('content');
             $table->dateTime('timestamp');
-            $table->bigInteger('recipient_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('recipient_id');
             $table->foreign('recipient_id')->references('id')->on('roles');
             $table->boolean('archived')->default(false);
             $table->timestamps();
