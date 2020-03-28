@@ -10,12 +10,11 @@
                 <a href="" class="item"><i class="mail icon"></i>Send Modmail</a>
             </div>
         </div> --}}
-        @can('access')
         <div class="ui dropdown item">
             Moderation
             <i class="dropdown icon"></i>
             <div class="menu">
-                {{-- <a href="#" class="item"><i class="mail icon"></i>Submit Complaint</a> --}}
+                <a href="{{route('complaint.create')}}" class="item"><i class="mail icon"></i>Submit Complaint</a>
                 @can('view actions')
                 <div class="divider"></div>
                 <div class="header">Actions</div>
@@ -37,7 +36,6 @@
                 @endcan
             </div>
         </div>
-        @endcan
         @role('admin')
         <div class="ui dropdown item">
             Admin

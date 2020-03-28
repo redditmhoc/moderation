@@ -28,6 +28,9 @@ class AuthController extends Controller
         $return = Socialite::driver('reddit')->user();
         $users = User::where(['username' => $return->nickname])->first();
         if($users){
+            if ($users->banned) {
+                abort(403, 'You have been banned.');
+            }
             Auth::login($users);
             return redirect()->route('dash');
         }else {

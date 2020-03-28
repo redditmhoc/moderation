@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Moderation;
 
+use App\Broadcasting\DiscordWebhookChannel;
 use App\Models\Moderation\Actions\Ban;
 use App\Models\Moderation\Actions\Warning;
 use App\Models\User;
+use App\Notifications\BanEndNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class ActionsController extends \App\Http\Controllers\Controller
@@ -114,7 +117,6 @@ class ActionsController extends \App\Http\Controllers\Controller
             Log::error($error);
         }
         curl_close($ch);
-
 
         return redirect()->route('actions.viewban', [$ban->reddit_username, $ban->id]);
     }
