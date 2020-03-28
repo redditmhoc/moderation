@@ -52,4 +52,5 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('utility')->group(function () {
     Route::post('checkuserhistory', 'Moderation\ActionsController@checkUserHistoryAjax')->middleware('permission:view actions')->name('utility.checkuserhistory');
+    Route::get('userdata', 'AuthController@getUserDataJson')->middleware('auth')->name('utility.userdata');
 });

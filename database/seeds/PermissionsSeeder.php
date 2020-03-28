@@ -42,5 +42,10 @@ class PermissionsSeeder extends Seeder
         $speakershipRole->givePermissionTo('edit ban');
         $speakershipRole->givePermissionTo('create warning');
         $speakershipRole->givePermissionTo('edit warning');
+
+        // create adviser role (can view things)
+        $adviserRole = Role::create(['name' => 'adviser']);
+        $adviserRole->givePermissionTo('access');
+        $adviserRole->givePermissionTo('view actions');
     }
 }

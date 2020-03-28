@@ -38,4 +38,13 @@ class AuthController extends Controller
             return redirect()->route('dash');
         }
     }
+
+    public function getUserDataJson()
+    {
+        $user = User::whereId(Auth::id())->firstOrFail();
+        $roles = $user->getRoleNames()->toArray();
+        $permissions = $user->getAllPermissions()->toArray();
+        $userArray = $user->toArray();
+        return json_encode($userArray);
+    }
 }
