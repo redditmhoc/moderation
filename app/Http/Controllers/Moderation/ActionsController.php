@@ -52,7 +52,11 @@ class ActionsController extends \App\Http\Controllers\Controller
             'evidence' => $request->get('evidence')
         ]);
 
-        $ban->start_timestamp = $request->get('timeDateIssued') ? $request->get('timeDateIssued') : Carbon::now();
+        if ($request->get('timeDateIssued') == null) {
+            $ban->start_timestamp = date('Y-m-d H:i:s');
+        } else {
+            $ban->start_timestamp = $request->get('timeDateIssued');
+        }
 
         if ($request->get('strikeLength')) {
             $ban->end_timestamp = Carbon::create($ban->start_timestamp)->addDays($request->get('strikeLength'));
