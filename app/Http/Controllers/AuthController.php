@@ -28,6 +28,9 @@ class AuthController extends Controller
         $return = Socialite::driver('reddit')->user();
         $users = User::where(['username' => $return->nickname])->first();
         if($users){
+            if ($users->banned) {
+                abort(403, 'You have been banned.');
+            }
             Auth::login($users);
             return redirect()->route('dash');
         }else {
@@ -37,5 +40,14 @@ class AuthController extends Controller
             Auth::login($user);
             return redirect()->route('dash');
         }
+    }
+
+    public function getUserDataJson()
+    {
+        $user = User::whereId(Auth::id())->firstOrFail();
+        $roles = $user->getRoleNames()->toArray();
+        $permissions = $user->getAllPermissions()->toArray();
+        $userArray = $user->toArray();
+        return json_encode($userArray);
     }
 }

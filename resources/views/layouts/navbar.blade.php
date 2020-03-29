@@ -10,12 +10,11 @@
                 <a href="" class="item"><i class="mail icon"></i>Send Modmail</a>
             </div>
         </div> --}}
-        @can('access')
         <div class="ui dropdown item">
             Moderation
             <i class="dropdown icon"></i>
             <div class="menu">
-                {{-- <a href="#" class="item"><i class="mail icon"></i>Submit Complaint</a> --}}
+                <a href="{{route('complaint.create')}}" class="item"><i class="mail icon"></i>Submit Complaint</a>
                 @can('view actions')
                 <div class="divider"></div>
                 <div class="header">Actions</div>
@@ -37,7 +36,6 @@
                 @endcan
             </div>
         </div>
-        @endcan
         @role('admin')
         <div class="ui dropdown item">
             Admin
@@ -57,7 +55,14 @@
                         <i style="color:{{$r->colour}}" class="circle icon"></i> {{ucfirst($r->name)}}
                         @endforeach
                     </div>
-                    <a class="item" href="javascript:alert('This isn\'t available yet')"><i class="user icon"></i> View Your Data</a>
+                    <a id="viewDataModalB" class="item" href="#"><i class="user icon"></i> View Your Data</a>
+                    <script>
+                        $(document).on("click", "#viewDataModalB", function(){
+                            $('#viewDataModal')
+                                .modal('show')
+                            ;
+                        });
+                    </script>
                     <a href="{{route('auth.logout')}}" class="item"><i class="key icon"></i> Sign Out</a>
                 </div>
             </div>
@@ -146,3 +151,32 @@
     </div>
 </div>
 @endcan
+<div class="ui modal" id="viewDataModal">
+    <div class="header">View Your Data</div>
+    <div class="content">
+        <h5>Basic Data</h5>
+        <ul>
+            <li><b>Username:</b> {{Auth::user()->username}}</li>
+            @foreach (Auth::user()->roles as $r)
+            <li><b>Role:</b> <i style="color:{{$r->colour}}" class="circle icon"></i> {{ucfirst($r->name)}}</li>
+            @endforeach
+            <li><b>User Created At:</b> {{Auth::user()->created_at}} GMT</li>
+        </ul>
+        <h5>Permissions</h5>
+        <ul>
+            @foreach(Auth::user()->getAllPermissions() as $p)
+            <li>{{ucfirst($p->name)}}</li>
+            @endforeach
+        </ul>
+        <h5>Actions</h5>
+        <a href="{{url('/utility/userdata')}}" class="ui teritary button">Download JSON</a>
+        <a href="#" id="deleteAccountMsgB" class="ui teritary button">Delete Account</a>
+        <script>
+            $(document).on("click", "#deleteAccountMsgB", function(){
+
+                $("#deleteAccountMsg").show();
+            })
+        </script>
+        <div id="deleteAccountMsg" class="ui hidden message">To delete your account please Reddit message /u/elliellia with your request.</div>
+    </div>
+</div>
