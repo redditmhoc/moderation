@@ -57,8 +57,15 @@ function ordinal($number) {
             <div class="content">
                 <div class="header" style="margin-bottom: 10px;">Actions</div>
                 <div class="ui fluid vertical buttons">
-                    @can('edit warning')
-                    <a href="#" class="ui button">Edit Warning</a>
+                    @can('edit actions')
+                    <a href="#" class="ui button" id="editB">Edit Warning</a>
+                    <script>
+                        $(document).on("click", "#editB", function(){
+                            $('#editModal')
+                                .modal('show')
+                            ;
+                        });
+                    </script>
                     @endcan
                     <a href="#" id="exportB" class="ui button">Export</a>
                     <script>
@@ -116,13 +123,7 @@ function ordinal($number) {
                     </div>
                     <div class="item">
                         <div class="content">
-                            <div class="header">Evidence</div>
-                            <a href="{{$warning->evidence}}">{{$warning->evidence}}</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="content">
-                            <div class="header">Comments</div>
+                            <div class="header">Comments / Evidence</div>
                             @if($warning->comments)
                             <p>{{$warning->comments}}</p>
                             @else
@@ -135,6 +136,8 @@ function ordinal($number) {
         </div>
     </div>
 </div>
+
+<!--Start Notification Template Modal-->
 <div class="ui modal" id="notificationTemplateModal">
     <div class="header">Notification template</div>
     <div class="content">
@@ -146,6 +149,9 @@ function ordinal($number) {
         </p>
     </div>
 </div>
+<!--End Notification Template Modal-->
+
+<!--Start Export Modal-->
 <div class="ui modal" id="exportModal">
     <div class="header">Export ban</div>
     <div class="content">
@@ -181,6 +187,108 @@ function ordinal($number) {
         </script>
     </div>
 </div>
+<!--End Export Modal-->
+@can('edit actions')
+<!--Start Edit Modal-->
+<div class="ui modal" id="editModal">
+    <div class="header">Edit warning</div>
+    <div class="content">
+        <p>Last updated at {{$warning->updated_at->toDayDateTimeString()}} GMT
+        </p>
+        <form action="{{route('actions.editwarning.post', [$warning->reddit_username, $warning->id])}}" method="POST" class="ui form" id="editForm">
+            @csrf
+            <h5 for="">Discord User ID</h5>
+            <div class="field">
+                <input type="text" value="{{$warning->discord_user_id}}" name="discordUserId">
+                <script>
+                    $(document).on("click", "#discordIDModalB", function(){
+                        $('#discordIDModal')
+                            .modal('show')
+                        ;
+                    });
+                </script>
+            </div>
+            <h5>Time and date</h5>
+            <input value="{{$warning->timestamp}}" type="datetime" name="timeDateIssued" class="flatpickr" id="timeDateIssued">
+            <script>
+                flatpickr('#timeDateIssued', {
+                    enableTime: true,
+                    noCalendar: false,
+                    dateFormat: "Y-m-d H:i",
+                    time_24hr: true,
+                });
+            </script>
+            <h5 for="">Time muted in minutes</h5>
+            <div class="field">
+                <div class="ui input">
+                    <input value="{{$warning->muted_minutes}}" type="number" name="muted_minutes" id="" max="120" min="0" value="0" placeholder="0">
+                </div>
+            </div>
+            <h5 for="">Reason for warning</h5>
+            <div class="field">
+                <div class="ui fluid search selection dropdown" id="strikeReasonDropdown">
+                    <input type="hidden" value="{{$warning->reason}}" name="reason">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select a reason</div>
+                    <div class="menu">
+                        <div class="item" data-value="Used discriminative language">
+                            Used discriminative language
+                        </div>
+                        <div class="item" data-value="Personally insulted/attacked another member of the community">
+                            Personally insulted/attacked another member of the community
+                        </div>
+                        <div class="item" data-value="Used vile and disturbing language">
+                            Used vile and disturbing language
+                        </div>
+                        <div class="item" data-value="Doxxed another member of the community or an associated community">
+                            Doxxed another member of the community or an associated community
+                        </div>
+                        <div class="item" data-value="Shared NSFW content">
+                            Shared NSFW content
+                        </div>
+                        <div class="item" data-value="Spam">
+                            Spam
+                        </div>
+                        <div class="item" data-value="Aggressive behaviour">
+                            Aggressive behaviour
+                        </div>
+                        <div class="item" data-value="Deliberately tried to circumvent the rules">
+                            Deliberately tried to circumvent the rules
+                        </div>
+                        <div class="item" data-value="Other">
+                            Other (specified in comments)
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $('#strikeReasonDropdown')
+                    .dropdown({
+                        onChange: function(value, text, $selectedItem) {
+                            console.info(value);
+                        }
+                    })
+                    ;
+                </script>
+            </div>
+            <h5 for="">Comments / Evidence</h5>
+            <div class="field">
+                <div class="ui input">
+                    <textarea style="width: 100%; height: 100px;" name="comments" id="" cols="30" rows="10">{{$warning->comments}}</textarea>
+                </div>
+            </div>
+            <br>
+            <button id="submitEditB" onclick="submitForm()" class="ui primary button">Submit Edit</button>
+            <script>
+                function submitForm () {
+                    $("#submitEditB").toggleClass('elastic loading');
+                    $("#editForm").submit();
+                }
+            </script>
+        </form>
+    </div>
+</div>
+<!--End Edit Modal-->
+@endcan
 </div>
 </div>
 @endsection

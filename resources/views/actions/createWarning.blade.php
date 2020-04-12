@@ -96,9 +96,9 @@
             })
         }
     </script>
-    <div class="required field">
+    <div class="field">
         <label for="">Discord User ID</label>
-        <input required type="text" name="discordUserId">
+        <input type="text" name="discordUserId">
         <a href="#" id="discordIDModalB">(How do I get this?)</a>
         <script>
             $(document).on("click", "#discordIDModalB", function(){
@@ -206,17 +206,10 @@
         </script>
     </div>
     <div class="field">
-        <label for="">Comments</label>
+        <label for="">Comments / Evidence</label>
         <div class="ui input">
             <textarea style="width: 100%; height: 100px;" name="comments" id="" cols="30" rows="10"></textarea>
         </div>
-    </div>
-    <div class="required field">
-        <label for="">Evidence</label>
-        <div class="ui input">
-            <input type="text" name="evidence" id="">
-        </div>
-        <p>Enter only 1 URL. For multiple images, use an Imgur album.</p>
     </div>
     <br><br>
     </form>

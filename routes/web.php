@@ -32,6 +32,7 @@ Route::view('/guidance', 'guidance')->name('guidance')->middleware('permission:a
 Route::prefix('actions')->group(function () {
     Route::get('create/ban', 'Moderation\ActionsController@createBan')->middleware('permission:create ban')->name('actions.createban');
     Route::post('create/ban', 'Moderation\ActionsController@createBanPost')->middleware('permission:create ban')->name('actions.createban.post');
+    Route::post('edit/ban/{reddit_username}/{id}', 'Moderation\ActionsController@editBanPost')->middleware('permission:edit actions')->name('actions.editban.post');
     Route::get('view/bans', 'Moderation\ActionsController@viewAllBans')->middleware('permission:view actions')->name('actions.viewallbans');
     Route::get('view/ban/{reddit_username}/{id}', 'Moderation\ActionsController@viewBan')->middleware('permission:view actions')->name('actions.viewban');
     Route::post('overturn/ban/{reddit_username}/{id}', 'Moderation\ActionsController@overturnBan')->middleware('permission:overturn ban')->name('actions.overturnban');
@@ -41,6 +42,7 @@ Route::prefix('actions')->group(function () {
     Route::post('create/warning', 'Moderation\ActionsController@createWarningPost')->middleware('permission:create warning')->name('actions.createwarning.post');
     Route::get('view/warnings', 'Moderation\ActionsController@viewAllWarnings')->middleware('permission:view actions')->name('actions.viewallwarnings');
     Route::get('view/warning/{reddit_username}/{id}', 'Moderation\ActionsController@viewWarning')->middleware('permission:view actions')->name('actions.viewwarning');
+    Route::post('edit/warning/{reddit_username}/{id}', 'Moderation\ActionsController@editWarningPost')->middleware('permission:edit actions')->name('actions.editwarning.post');
 });
 
 Route::prefix('admin')->group(function () {

@@ -34,9 +34,9 @@
 
 
     </script>
-    <div class="required field">
+    <div class="field">
         <label for="">Discord User ID</label>
-        <input required type="text" name="discordUserId">
+        <input type="text" name="discordUserId">
         <a href="#" id="discordIDModalB">(How do I get this?)</a>
         <script>
             $(document).on("click", "#discordIDModalB", function(){

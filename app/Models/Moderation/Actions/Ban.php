@@ -54,4 +54,6 @@ class Ban extends Model
         else
             return $this->strike_level. $ends[$this->strike_level % 10];
     }
+
+
 }

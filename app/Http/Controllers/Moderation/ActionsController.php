@@ -35,7 +35,6 @@ class ActionsController extends \App\Http\Controllers\Controller
         //Validate request
         $validator = Validator::make($request->all(), [
             'redditUsername' => 'required',
-            'discordUserId' => 'required',
             'strikeLevel' => 'required',
             'strikeReason' => 'required',
             'evidence' => 'required'
@@ -126,9 +125,7 @@ class ActionsController extends \App\Http\Controllers\Controller
         //Validate request
         $validator = Validator::make($request->all(), [
             'redditUsername' => 'required',
-            'discordUserId' => 'required',
             'reason' => 'required',
-            'evidence' => 'required',
             'muted_minutes' => 'integer'
         ]);
 
@@ -143,7 +140,6 @@ class ActionsController extends \App\Http\Controllers\Controller
             'moderator_id' => $request->get('modIssuing'),
             'reason' => $request->get('reason'),
             'comments' => $request->get('comments'),
-            'evidence' => $request->get('evidence')
         ]);
 
         $warning->timestamp = $request->get('timeDateIssued') ? $request->get('timeDateIssued') : Carbon::now();
@@ -159,7 +155,7 @@ class ActionsController extends \App\Http\Controllers\Controller
             "embeds" => [
                 [
                     "title" => 'Warning | '. $warning->reddit_username,
-                    "description" => "Issued by ".$warning->moderator->username.' at '.$warning->start_timestamp.' GMT (muted '.$warning->muted_minutes.' min) for '.$warning->reason.'.',
+                    "description" => "Issued by ".$warning->moderator->username.' at '.$warning->timestmap.' GMT (muted '.$warning->muted_minutes.' min) for '.$warning->reason.'.',
                     "url" => route('actions.viewwarning', [$warning->reddit_username, $warning->id])
                 ]
             ]
@@ -203,6 +199,55 @@ class ActionsController extends \App\Http\Controllers\Controller
     {
         $warning = Warning::where('reddit_username', $reddit_username)->where('id', $id)->firstOrFail();
         return view('actions.viewWarning', compact('warning'));
+    }
+
+    public function editWarningPost(Request $request, $reddit_username, $id)
+    {
+        //Find the warning
+        $warning = Warning::where('reddit_username', $reddit_username)->where('id', $id)->firstOrFail();
+
+        //Validate request
+        $validator = Validator::make($request->all(), [
+            'muted_minutes' => 'integer'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator, 'editWarning');
+        }
+
+        //Edit the warning then I guess
+        $warning->discord_user_id = $request->get('discordUserId');
+        $warning->muted_minutes = $request->get('muted_minutes');
+        $warning->reason = $request->get('reason');
+        $warning->comments = $request->get('comments');
+        $warning->timestamp = $request->get('timeDateIssued');
+        $warning->save();
+
+        return redirect()->back();
+    }
+
+    public function editBanPost(Request $request, $reddit_username, $id)
+    {
+        //Find the ban
+        $ban = Ban::where('reddit_username', $reddit_username)->where('id', $id)->firstOrFail();
+
+        //Validate request
+        $validator = Validator::make($request->all(), [
+            'evidence' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator, 'editBan');
+        }
+
+        //Edit the ban then I guess
+        $ban->discord_user_id = $request->get('discordUserId');
+        $ban->reason = $request->get('reason');
+        $ban->comments = $request->get('comments');
+        $ban->evidence = $request->get('evidence');
+        $ban->save();
+
+        return redirect()->back();
     }
 
     public function overturnBan(Request $request, $reddit_username, $id)

@@ -85,8 +85,15 @@ function ordinal($number) {
             <div class="content">
                 <div class="header" style="margin-bottom: 10px;">Actions</div>
                 <div class="ui fluid vertical buttons">
-                    @can('edit ban')
-                    <a href="#" class="ui button">Edit Ban</a>
+                    @can('edit actions')
+                    <a href="#" class="ui button" id="editB">Edit Ban</a>
+                    <script>
+                        $(document).on("click", "#editB", function(){
+                            $('#editModal')
+                                .modal('show')
+                            ;
+                        });
+                    </script>
                     @endcan
                     <a href="#" id="exportB" class="ui button">Export</a>
                     <script>
@@ -151,6 +158,20 @@ function ordinal($number) {
                         <div class="content">
                             <div class="header">Total duration</div>
                             {{$ban->duration()}} day(s)
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="time icon"></i>
+                        <div class="content">
+                            <div class="header">Probation length</div>
+                            {{$ban->probation_length}} days
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="calendar icon"></i>
+                        <div class="content">
+                            <div class="header">Probation ends</div>
+                            {{Carbon\Carbon::create($ban->start_timestamp)->addDays($ban->probation_length)->toDayDateTimeString()}} GMT
                         </div>
                     </div>
                     @endif
@@ -407,7 +428,103 @@ function ordinal($number) {
         </div>
     </div>
 </div>
-</div>
-</div>
 @endcan
+@can('edit actions')
+<!--Start Edit Modal-->
+<div class="ui modal" id="editModal">
+    <div class="header">Edit ban</div>
+    <div class="content">
+        <div class="ui message">
+            <div class="content">Please do not use this function to change strike levels, or significant portions of a ban. Use the overturn feature and create an entirely new ban.</div>
+        </div>
+        <p>Last updated at {{$ban->updated_at->toDayDateTimeString()}} GMT
+        </p>
+        <form action="{{route('actions.editban.post', [$ban->reddit_username, $ban->id])}}" method="POST" class="ui form" id="editForm">
+            @csrf
+            <h5 for="">Discord User ID</h5>
+            <div class="field">
+                <input type="text" value="{{$ban->discord_user_id}}" name="discordUserId">
+                <script>
+                    $(document).on("click", "#discordIDModalB", function(){
+                        $('#discordIDModal')
+                            .modal('show')
+                        ;
+                    });
+                </script>
+            </div>
+            <h5 for="">Reason for ban</h5>
+            <div class="field">
+                <div class="ui fluid search selection dropdown" id="strikeReasonDropdown">
+                    <input type="hidden" value="{{$ban->reason}}" name="reason">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select a reason</div>
+                    <div class="menu">
+                        <div class="item" data-value="Used discriminative language">
+                            Used discriminative language
+                        </div>
+                        <div class="item" data-value="Personally insulted/attacked another member of the community">
+                            Personally insulted/attacked another member of the community
+                        </div>
+                        <div class="item" data-value="Used vile and disturbing language">
+                            Used vile and disturbing language
+                        </div>
+                        <div class="item" data-value="Doxxed another member of the community or an associated community">
+                            Doxxed another member of the community or an associated community
+                        </div>
+                        <div class="item" data-value="Shared NSFW content">
+                            Shared NSFW content
+                        </div>
+                        <div class="item" data-value="Spam">
+                            Spam
+                        </div>
+                        <div class="item" data-value="Aggressive behaviour">
+                            Aggressive behaviour
+                        </div>
+                        <div class="item" data-value="Deliberately tried to circumvent the rules">
+                            Deliberately tried to circumvent the rules
+                        </div>
+                        <div class="item" data-value="Other">
+                            Other (specified in comments)
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $('#strikeReasonDropdown')
+                    .dropdown({
+                        onChange: function(value, text, $selectedItem) {
+                            console.info(value);
+                        }
+                    })
+                    ;
+                </script>
+            </div>
+            <h5 for="">Comments / Evidence</h5>
+            <div class="field">
+                <label for="">Comments</label>
+                <div class="ui input">
+                    <textarea style="width: 100%; height: 100px;" name="comments" id="" cols="30" rows="10">{{$ban->comments}}</textarea>
+                </div>
+            </div>
+            <div class="field">
+                <label for="">Evidence</label>
+                <div class="ui input">
+                    <input type="text" value="{{$ban->evidence}}" name="evidence" id="">
+                </div>
+                <p>Enter only 1 URL. For multiple images, use an Imgur album.</p>
+            </div>
+            <br>
+            <button id="submitEditB" onclick="submitForm()" class="ui primary button">Submit Edit</button>
+            <script>
+                function submitForm () {
+                    $("#submitEditB").toggleClass('elastic loading');
+                    $("#editForm").submit();
+                }
+            </script>
+        </form>
+    </div>
+</div>
+<!--End Edit Modal-->
+@endcan
+</div>
+</div>
 @endsection
