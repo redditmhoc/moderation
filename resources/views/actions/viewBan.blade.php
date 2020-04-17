@@ -418,9 +418,9 @@ function ordinal($number) {
             </div>
             </form>
             <br>
-            <button id="submitOverturnB" onclick="submitForm()" class="ui red button">Overturn Ban</button>
+            <button id="submitOverturnB" onclick="submitOverturnForm()" class="ui red button">Overturn Ban</button>
             <script>
-                function submitForm () {
+                function submitOverturnForm () {
                     $("#submitOverturnB").toggleClass('elastic loading');
                     $("#overturnForm").submit();
                 }
@@ -513,9 +513,9 @@ function ordinal($number) {
                 <p>Enter only 1 URL. For multiple images, use an Imgur album.</p>
             </div>
             <br>
-            <button id="submitEditB" onclick="submitForm()" class="ui primary button">Submit Edit</button>
+            <button id="submitEditB" onclick="submitEditForm()" class="ui primary button">Submit Edit</button>
             <script>
-                function submitForm () {
+                function submitEditForm () {
                     $("#submitEditB").toggleClass('elastic loading');
                     $("#editForm").submit();
                 }
