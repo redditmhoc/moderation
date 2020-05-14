@@ -35,8 +35,9 @@ class ActionsController extends \App\Http\Controllers\Controller
         //Validate request
         $validator = Validator::make($request->all(), [
             'redditUsername' => 'required',
-            'strikeLevel' => 'required',
-            'strikeReason' => 'required',
+            'duration' => 'required',
+            'durationInputType' => 'required',
+            'banReason' => 'required',
             'evidence' => 'required'
         ]);
 
@@ -47,9 +48,8 @@ class ActionsController extends \App\Http\Controllers\Controller
         $ban = new Ban([
             'reddit_username' => $request->get('redditUsername'),
             'discord_user_id' => $request->get('discordUserId'),
-            'strike_level' => $request->get('strikeLevel'),
             'moderator_id' => $request->get('modIssuing'),
-            'reason' => $request->get('strikeReason'),
+            'reason' => $request->get('reason'),
             'comments' => $request->get('comments'),
             'evidence' => $request->get('evidence')
         ]);
@@ -60,20 +60,11 @@ class ActionsController extends \App\Http\Controllers\Controller
             $ban->start_timestamp = $request->get('timeDateIssued');
         }
 
-        if ($request->get('strikeLength')) {
-            $ban->end_timestamp = Carbon::create($ban->start_timestamp)->addDays($request->get('strikeLength'));
+        if ($request->get('durationInputType') == 'days') {
+            $ban->end_timestamp = Carbon::create($ban->start_timestamp)->addDays($request->get('duration'));
         }
-
-        switch ($request->get('strikeLevel')) {
-            case 1:
-                $ban->probation_length = 7;
-            break;
-            case 2:
-                $ban->probation_length = 30;
-            break;
-            case 3 || 4:
-                $ban->probation_length = 90;
-            break;
+        else { //Hours
+            $ban->end_timestamp = Carbon::create($ban->start_timestamp)->addDays(round($request->get('duration') / 24));
         }
 
         if ($request->get('autoBanDiscord') == 'on') {
@@ -94,7 +85,7 @@ class ActionsController extends \App\Http\Controllers\Controller
             "tts" => false,
             "embeds" => [
                 [
-                    "title" => $ban->permanent() ? 'Permanent Ban | ' .$ban->reddit_username : $ban->ordinal().' Strike | '. $ban->reddit_username,
+                    "title" => $ban->permanent() ? 'Permanent Ban | ' .$ban->reddit_username : $ban->ordinal().' Ban | '. $ban->reddit_username,
                     "description" => "Issued by ".$ban->moderator->username.' at '.$ban->start_timestamp.' GMT until '.$ban->end_timestamp.' GMT ('. $ban->duration() . ' days) for '.$ban->reason.'.',
                     "url" => route('actions.viewban', [$ban->reddit_username, $ban->id])
                 ]

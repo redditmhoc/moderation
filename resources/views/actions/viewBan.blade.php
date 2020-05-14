@@ -130,7 +130,11 @@ function ordinal($number) {
         <div class="ui fluid card">
             <div class="content">
                 <div class="header">Ban Details</div>
+                @if($ban->strike_level)
+                <p>This ban was issued under the old strike system.</p>
+                @endif
                 <div class="ui list">
+                    @if($ban->strike_level)
                     <div class="item">
                         <i class="tachometer alternate icon"></i>
                         <div class="content">
@@ -138,6 +142,7 @@ function ordinal($number) {
                             {{ordinal($ban->strike_level)}} Strike
                         </div>
                     </div>
+                    @endif
                     <div class="item">
                         <i class="calendar icon"></i>
                         <div class="content">
@@ -160,6 +165,7 @@ function ordinal($number) {
                             {{$ban->duration()}} day(s)
                         </div>
                     </div>
+                    @if($ban->probation_length)
                     <div class="item">
                         <i class="time icon"></i>
                         <div class="content">
@@ -174,6 +180,7 @@ function ordinal($number) {
                             {{Carbon\Carbon::create($ban->start_timestamp)->addDays($ban->probation_length)->toDayDateTimeString()}} GMT
                         </div>
                     </div>
+                    @endif
                     @endif
                 </div>
             </div>

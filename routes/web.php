@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('test', function() {
+    Auth::login(App\Models\User::find(1));
+});
+
 Route::prefix('auth')->group(function () {
     Route::get('login', 'AuthController@redditLogin')->name('auth.login');
     Route::get('callback', 'AuthController@redditCallback')->name('auth.callback');

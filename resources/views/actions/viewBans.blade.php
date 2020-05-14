@@ -37,7 +37,6 @@ function ordinal($number) {
     <table class="ui celled table">
         <thead>
             <th>Reddit Username</th>
-            <th>Strike Level</th>
             <th>Banned At</th>
             <th>Banned Until</th>
             <th>Actions</th>
@@ -46,7 +45,6 @@ function ordinal($number) {
             @foreach($activeBans as $b)
                 <tr>
                     <td>{{$b->reddit_username}}</td>
-                    <td>{{ordinal($b->strike_level)}} Strike</td>
                     <td>{{Carbon\Carbon::create($b->start_timestamp)->toDayDateTimeString()}}</td>
                     <td>{{Carbon\Carbon::create($b->end_timestamp)->toDayDateTimeString()}}</td>
                     <td><a href="{{route('actions.viewban', [$b->reddit_username, $b->id])}}">View Ban</a></td>
@@ -77,7 +75,6 @@ function ordinal($number) {
     <table class="ui celled table">
         <thead>
             <th>Reddit Username</th>
-            <th>Strike Level</th>
             <th>Banned From</th>
             <th>Banned To</th>
             <th>Actions</th>
@@ -86,7 +83,6 @@ function ordinal($number) {
             @foreach($pastBans as $b)
                 <tr>
                     <td>{{$b->reddit_username}}</td>
-                    <td>{{ordinal($b->strike_level)}} Strike</td>
                     <td>{{Carbon\Carbon::create($b->start_timestamp)->toDayDateTimeString()}}</td>
                     <td>{{Carbon\Carbon::create($b->end_timestamp)->toDayDateTimeString()}}</td>
                     <td><a href="{{route('actions.viewban', [$b->reddit_username, $b->id])}}">View Ban</a></td>
@@ -99,7 +95,6 @@ function ordinal($number) {
     <table class="ui celled table">
         <thead>
             <th>Reddit Username</th>
-            <th>Strike Level</th>
             <th>Banned From</th>
             <th>Banned To</th>
             <th>Actions</th>
@@ -108,7 +103,6 @@ function ordinal($number) {
             @foreach($overturnedBans as $b)
                 <tr>
                     <td>{{$b->reddit_username}}</td>
-                    <td>{{ordinal($b->strike_level)}} Strike</td>
                     <td>{{Carbon\Carbon::create($b->start_timestamp)->toDayDateTimeString()}}</td>
                     <td>{{Carbon\Carbon::create($b->end_timestamp)->toDayDateTimeString()}}</td>
                     <td><a href="{{route('actions.viewban', [$b->reddit_username, $b->id])}}">View Ban</a></td>

@@ -47,60 +47,34 @@
         </script>
     </div>
     <h4 class="ui horizontal left aligned divider header">
-        Strike
+        Ban Duration
     </h4>
-    <div class="required field">
-        <label for="">Strike Level</label>
-        <div class="ui selection dropdown" id="strikeLevelDropdown">
-            <input type="hidden" required name="strikeLevel">
-            <i class="dropdown icon"></i>
-            <div class="default text">Select level</div>
-            <div class="menu">
-                <div class="item" data-value="1">1st Strike</div>
-                <div class="item" data-value="2">2nd Strike</div>
-                <div class="item" data-value="3">3rd Strike</div>
-                <div class="item" data-value="4">4th Strike</div>
-                @can('permanent ban')
-                <div class="item" data-value="5">4th Strike (Permanent)</div>
-                @endcan
-            </div>
-        </div>
-    </div>
     <div class="field">
-        <label for="">Length (in days)</label>
-        <div class="ui disabled input" id="strikeLengthInputContainer">
-            <input id="strikeLengthInput" name="strikeLength" type="number">
+        <label for="" id="durationInputLabel">Ban duration in days</label>
+        <input type="hidden" name="durationInputType" value="days">
+        <div class="ui input" id="durationInputContainer">
+            <input id="durationInput" name="duration" type="number">
         </div>
-        <p>This is set automaticaly for 1st and 2nd strike levels.</p>
-    </div>
-    <script>
-        $('#strikeLevelDropdown')
-        .dropdown({
-            onChange: function(value, text, $selectedItem) {
-                console.info(value);
-                if (value > 2 && value < 5) {
-                    console.log('Enabling length input...')
-                    $("#strikeLengthInputContainer").removeClass('disabled');
-                    $("#strikeLengthInput").val(28);
+        <a href="#" id="switchDurationInputB">(switch to hours)</a>
+        <script>
+            $(document).on("click", "#switchDurationInputB", function(){
+                if ($('input[name=durationInputType]').val() == 'days') {
+                    $('#durationInputLabel').text('Ban duration in hours')
+                    $('#switchDurationInputB').text('(switch to days)')
+                    $('input[name=durationInputType]').val('hours')
                 } else {
-                    $("#strikeLengthInputContainer").addClass('disabled');
-                    if (value == 1) {
-                        $("#strikeLengthInput").val(1);
-                    } else if (value == 2) {
-                        $("#strikeLengthInput").val(7);
-                    } else {
-                        $("#strikeLengthInput").val(null);
-                    }
+                    $('#durationInputLabel').text('Ban duration in days')
+                    $('#switchDurationInputB').text('(switch to hours)')
+                    $('input[name=durationInputType]').val('days')
                 }
-            }
-        })
-        ;
-    </script>
+            });
+        </script>
+    </div>
     <h4 class="ui horizontal left aligned divider header">
         Issued
     </h4>
     <div class="required field">
-        <label for="">Mod issuing strike</label>
+        <label for="">Moderator issuing ban</label>
         <div class="ui fluid search selection dropdown" id="modIssuingDropdown">
             <input type="hidden" value="{{Auth::user()->id}}" name="modIssuing">
             <i class="dropdown icon"></i>
@@ -139,9 +113,9 @@
         Reasoning
     </h4>
     <div class="required field">
-        <label for="">Reason for strike</label>
+        <label for="">Reason for ban</label>
         <div class="ui fluid search selection dropdown" id="strikeReasonDropdown">
-            <input type="hidden" value="" name="strikeReason">
+            <input type="hidden" value="" name="banReason">
             <i class="dropdown icon"></i>
             <div class="default text">Select a reason</div>
             <div class="menu">
@@ -201,7 +175,7 @@
         Options
     </h4>
     <div class="ui checkbox">
-        <input name="autoBanDiscord" type="checkbox">
+        <input disabled name="autoBanDiscord" type="checkbox">
         <label>Automatically ban user from main</label>
     </div>&nbsp;&nbsp;
     @can('subreddit ban')
