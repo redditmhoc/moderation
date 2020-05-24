@@ -167,7 +167,7 @@ class ActionsController extends \App\Http\Controllers\Controller
             "embeds" => [
                 [
                     "title" => "[WARNING/MUTE] u/{$warning->reddit_username}",
-                    "url" => route('actions.viewban', [$warning->reddit_username, $warning->id]),
+                    "url" => route('actions.viewwarning', [$warning->reddit_username, $warning->id]),
                     "fields" => [
                         [
                             "name" => "Reason",
