@@ -85,7 +85,7 @@ class ActionsController extends \App\Http\Controllers\Controller
             "tts" => false,
             "embeds" => [
                 [
-                    "title" => $ban->permanent() ? 'Permanent Ban | ' .$ban->reddit_username : $ban->ordinal().' Ban | '. $ban->reddit_username,
+                    "title" => $ban->permanent() ? 'Permanent Ban |' .$ban->reddit_username : $ban->reddit_username,
                     "description" => "Issued by ".$ban->moderator->username.' at '.$ban->start_timestamp.' GMT until '.$ban->end_timestamp.' GMT ('. $ban->duration() . ' days) for '.$ban->reason.'.',
                     "url" => route('actions.viewban', [$ban->reddit_username, $ban->id])
                 ]

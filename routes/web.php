@@ -62,6 +62,4 @@ Route::prefix('utility')->group(function () {
 });
 
 Route::prefix('public')->group(function () {
-    Route::get('complaint/create', 'Moderation\ComplaintsController@createComplaint')->name('complaint.create');
-    Route::post('complaint/create', 'Moderation\ComplaintsController@createComplaintPost')->name('complaint.create.post');
 });
