@@ -30,12 +30,18 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'create warning']);
         Permission::create(['name' => 'edit warning']);
         Permission::create(['name' => 'overturn warning']);
+        Permission::create(['name' => 'commons tasks']);
+        Permission::create(['name' => 'lords tasks']);
+        Permission::create(['name' => 'holyrood tasks']);
+        Permission::create(['name' => 'stormont tasks']);
+        Permission::create(['name' => 'senedd tasks']);
+
 
         // create admin role (can do anything, so quad and guardians)
-        $adminRole = Role::create(['name' => 'admin']);
+        $adminRole = Role::create(['name' => 'Admin', 'colour' => '#6EEB83']);
 
-        // create speakership role (can do most things)
-        $speakershipRole = Role::create(['name' => 'speakership']);
+        // create discord mod role (can do most things)
+        $speakershipRole = Role::create(['name' => 'Discord Moderator', 'colour' => '#71B340']);
         $speakershipRole->givePermissionTo('access');
         $speakershipRole->givePermissionTo('view actions');
         $speakershipRole->givePermissionTo('create ban');
@@ -44,8 +50,33 @@ class PermissionsSeeder extends Seeder
         $speakershipRole->givePermissionTo('edit warning');
 
         // create adviser role (can view things)
-        $adviserRole = Role::create(['name' => 'adviser']);
+        $adviserRole = Role::create(['name' => 'Adviser', 'colour' => '#FF8421']);
         $adviserRole->givePermissionTo('access');
         $adviserRole->givePermissionTo('view actions');
+
+        // create commons speakership role
+        $commonsSpeakershipRole = Role::create(['name' => 'Commons Speakership', 'colour' => '#006B3E']);
+        $commonsSpeakershipRole->givePermissionTo('access');
+        $commonsSpeakershipRole->givePermissionTo('commons tasks');
+
+        // create lords speakership role
+        $lordsSpeakershipRole = Role::create(['name' => 'Lords Speakership', 'colour' => 'rgb(237, 41, 57)']);
+        $lordsSpeakershipRole->givePermissionTo('access');
+        $lordsSpeakershipRole->givePermissionTo('lords tasks');
+
+        // create holyrood speakership role
+        $holyroodSpeakershipRole = Role::create(['name' => 'Holyrood Speakership', 'colour' => '#5B3082']);
+        $holyroodSpeakershipRole->givePermissionTo('access');
+        $holyroodSpeakershipRole->givePermissionTo('holyrood tasks');
+
+        // create stormont speakership role
+        $stormontSpeakershipRole = Role::create(['name' => 'Stormont Speakership', 'colour' => '#6699cc']);
+        $stormontSpeakershipRole->givePermissionTo('access');
+        $stormontSpeakershipRole->givePermissionTo('stormont tasks');
+
+        // create senedd speakership role
+        $seneddSpeakershipRole = Role::create(['name' => 'Senedd Speakership', 'colour' => '#950754']);
+        $seneddSpeakershipRole->givePermissionTo('access');
+        $seneddSpeakershipRole->givePermissionTo('senedd tasks');
     }
 }

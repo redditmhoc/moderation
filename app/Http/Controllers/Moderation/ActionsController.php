@@ -49,7 +49,7 @@ class ActionsController extends \App\Http\Controllers\Controller
             'reddit_username' => $request->get('redditUsername'),
             'discord_user_id' => $request->get('discordUserId'),
             'moderator_id' => $request->get('modIssuing'),
-            'reason' => $request->get('reason'),
+            'reason' => $request->get('banReason'),
             'comments' => $request->get('comments'),
             'evidence' => $request->get('evidence')
         ]);
@@ -85,13 +85,34 @@ class ActionsController extends \App\Http\Controllers\Controller
             "tts" => false,
             "embeds" => [
                 [
-                    "title" => $ban->permanent() ? 'Permanent Ban |' .$ban->reddit_username : $ban->reddit_username,
-                    "description" => "Issued by ".$ban->moderator->username.' at '.$ban->start_timestamp.' GMT until '.$ban->end_timestamp.' GMT ('. $ban->duration() . ' days) for '.$ban->reason.'.',
-                    "url" => route('actions.viewban', [$ban->reddit_username, $ban->id])
+                    "title" => "[BAN] u/{$ban->reddit_username}",
+                    "url" => route('actions.viewban', [$ban->reddit_username, $ban->id]),
+                    "fields" => [
+                        [
+                            "name" => "Reason",
+                            "value" => $ban->reason,
+                            "inline" => false
+                        ],
+                        [
+                            "name" => "Moderator",
+                            "value" => "u/".$ban->moderator->username,
+                            "inline" => false
+
+                        ],
+                        [
+                            "name" => "Duration (days)",
+                            "value" => $request->get('duration')." days",
+                            "inline" => false
+                        ],
+                        [
+                            "name" => "Expires at",
+                            "value" => $ban->permanent() ? "Never (perma ban)" : "{$ban->end_timestamp->toDayDateTimeString()}",
+                            "inline" => false
+                        ]
+                    ]
                 ]
             ]
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-
         $ch = curl_init();
         curl_setopt_array( $ch, [
             CURLOPT_URL => config('services.discord.webhooks.discord_mods'),
@@ -145,9 +166,26 @@ class ActionsController extends \App\Http\Controllers\Controller
             "tts" => false,
             "embeds" => [
                 [
-                    "title" => 'Warning | '. $warning->reddit_username,
-                    "description" => "Issued by ".$warning->moderator->username.' at '.$warning->timestmap.' GMT (muted '.$warning->muted_minutes.' min) for '.$warning->reason.'.',
-                    "url" => route('actions.viewwarning', [$warning->reddit_username, $warning->id])
+                    "title" => "[WARNING/MUTE] u/{$warning->reddit_username}",
+                    "url" => route('actions.viewban', [$warning->reddit_username, $warning->id]),
+                    "fields" => [
+                        [
+                            "name" => "Reason",
+                            "value" => $warning->reason,
+                            "inline" => false
+                        ],
+                        [
+                            "name" => "Moderator",
+                            "value" => "u/".$warning->moderator->username,
+                            "inline" => false
+
+                        ],
+                        [
+                            "name" => "Mute duration (minutes)",
+                            "value" => $request->get('muted_minutes')." minutes",
+                            "inline" => false
+                        ],
+                    ]
                 ]
             ]
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );

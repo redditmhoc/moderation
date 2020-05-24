@@ -3,18 +3,20 @@
         <a href="{{route('dash')}}" class="{{Request::is('dash') ? 'active' : ''}} item">
             Dashboard
         </a>
-        {{-- <div class="ui dropdown item">
+        <div class="ui dropdown item">
             Speakership
             <i class="dropdown icon"></i>
             <div class="menu">
-                <a href="" class="item"><i class="mail icon"></i>Send Modmail</a>
+                @can('lords tasks')
+                <div class="header">Lords Tasks</div>
+                <a href="{{route('speakership.lords.countvote')}}" class="item"><i class="list icon"></i>Count a Vote</a>
+                @endcan
             </div>
-        </div> --}}
+        </div>
         <div class="ui dropdown item">
             Moderation
             <i class="dropdown icon"></i>
             <div class="menu">
-                <a href="{{route('complaint.create')}}" class="item"><i class="mail icon"></i>Submit Complaint</a>
                 @can('view actions')
                 <div class="divider"></div>
                 <div class="header">Actions</div>
@@ -36,7 +38,7 @@
                 @endcan
             </div>
         </div>
-        @role('admin')
+        @role('Admin')
         <div class="ui dropdown item">
             Admin
             <i class="dropdown icon"></i>
@@ -120,7 +122,7 @@
                         let item = $('<div></div>').addClass('item').html(
                             `
                             <div class="content">
-                                ${getGetOrdinal(ban.strike_level)} Strike - ${ban.start_timestamp} - <a href="/actions/view/ban/${ban.reddit_username}/${ban.id}">View</a>
+                                ${ban.start_timestamp} - <a href="/actions/view/ban/${ban.reddit_username}/${ban.id}">View</a>
                             </div>
                             `
                         )

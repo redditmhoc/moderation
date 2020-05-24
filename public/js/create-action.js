@@ -39,7 +39,7 @@ function checkUserHistory(user) {
                 let item = $('<div></div>').addClass('item').html(
                     `
                     <div class="content">
-                        ${getGetOrdinal(ban.strike_level)} Strike - ${ban.start_timestamp} - <a href="/actions/view/ban/${ban.reddit_username}/${ban.id}">View</a>
+                        ${ban.start_timestamp} - <a href="/actions/view/ban/${ban.reddit_username}/${ban.id}">View</a>
                     </div>
                     `
                 )

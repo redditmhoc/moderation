@@ -39,7 +39,7 @@
           <h3>Information</h3>
           <a href="{{route('guidance')}}" class="ui button">Guidance and Templates</a>
           <a href="https://docs.google.com/spreadsheets/d/15W_5TU2r683_RRD7kM4NE_Eau7sywyJ2yB47yrPWU2c/edit#gid=313010852" class="ui button">Spreadsheet</a>
-          @role('admin')
+          @role('Admin')
           <h3>Admin</h3>
           <a href="{{route('admin.managepermissions')}}" class="ui button">Manage Permissions</a>
           @endrole

@@ -50,10 +50,14 @@ Route::prefix('actions')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('permissions', 'AdminController@managePermissions')->middleware('role:admin')->name('admin.managepermissions');
-    Route::post('permissions/assignrole', 'AdminController@assignRoleAjax')->middleware('role:admin')->name('admin.assignrole');
-    Route::post('permissions/removerole', 'AdminController@removeRoleAjax')->middleware('role:admin')->name('admin.removerole');
-    Route::post('permissions/searchuserinfo', 'AdminController@searchUserInfoAjax')->middleware('role:admin')->name('admin.searchuserinfo');
+    Route::get('permissions', 'AdminController@managePermissions')->middleware('role:Admin')->name('admin.managepermissions');
+    Route::post('permissions/assignrole', 'AdminController@assignRoleAjax')->middleware('role:Admin')->name('admin.assignrole');
+    Route::post('permissions/removerole', 'AdminController@removeRoleAjax')->middleware('role:Admin')->name('admin.removerole');
+    Route::post('permissions/searchuserinfo', 'AdminController@searchUserInfoAjax')->middleware('role:Admin')->name('admin.searchuserinfo');
+});
+
+Route::prefix('speakership/lords')->group(function () {
+    Route::get('count-vote', 'Speakership\LordsController@countVote')->middleware('permission:commons tasks')->name('speakership.lords.countvote');
 });
 
 Route::prefix('utility')->group(function () {

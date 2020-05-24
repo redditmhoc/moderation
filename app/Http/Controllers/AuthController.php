@@ -36,6 +36,7 @@ class AuthController extends Controller
         }else {
             $user = new User();
             $user->username = $return->nickname;
+            $user->banned = false;
             $user->save();
             Auth::login($user);
             return redirect()->route('dash');
