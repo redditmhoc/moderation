@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class ActionsController extends \App\Http\Controllers\Controller
@@ -369,5 +370,45 @@ class ActionsController extends \App\Http\Controllers\Controller
                 echo($ex);
             }
         }
+    }
+
+    public function exportBans()
+    {
+        $table = Ban::all();
+        $fillable = $table[0]->getFillable();
+        $filename = "bans.csv";
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $fillable);
+        foreach($table as $row) {
+            fputcsv($handle, $row->makeHidden('id')->toArray());
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+
+        return Response::download($filename, 'bans.csv', $headers);
+    }
+
+    public function exportWarnings()
+    {
+        $table = Warning::all();
+        $fillable = $table[0]->getFillable();
+        $filename = "warnings.csv";
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $fillable);
+        foreach($table as $row) {
+            fputcsv($handle, $row->makeHidden('id')->toArray());
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+
+        return Response::download($filename, 'warnings.csv', $headers);
     }
 }

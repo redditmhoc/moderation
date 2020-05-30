@@ -41,6 +41,8 @@ Route::prefix('actions')->group(function () {
     Route::get('view/ban/{reddit_username}/{id}', 'Moderation\ActionsController@viewBan')->middleware('permission:view actions')->name('actions.viewban');
     Route::post('overturn/ban/{reddit_username}/{id}', 'Moderation\ActionsController@overturnBan')->middleware('permission:overturn ban')->name('actions.overturnban');
     Route::post('import/bans', 'Moderation\ActionsController@importBansFromFile')->middleware('role:admin')->name('actions.importbans');
+    Route::get('export/bans', 'Moderation\ActionsController@exportBans')->middleware('permission:view actions')->name('actions.exportbans');
+    Route::get('export/warnings', 'Moderation\ActionsController@exportWarnings')->middleware('permission:view actions')->name('actions.exportwarnings');
 
     Route::get('create/warning', 'Moderation\ActionsController@createWarning')->middleware('permission:create warning')->name('actions.createwarning');
     Route::post('create/warning', 'Moderation\ActionsController@createWarningPost')->middleware('permission:create warning')->name('actions.createwarning.post');

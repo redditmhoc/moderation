@@ -19,6 +19,7 @@ function ordinal($number) {
     <h1 class="ui left floated header">View Bans</h1>
     <a href="{{route('actions.createban')}}" class="ui right floated primary button">Create Ban</a>
     <a href="#" id="importBansB" class="ui right floated button">Import Bans</a>
+    <a href="{{route('actions.exportbans')}}" class="ui right floated button">Export Bans</a>
     <script>
         $(document).on("click", "#importBansB", function(){
             $('#importBansM')

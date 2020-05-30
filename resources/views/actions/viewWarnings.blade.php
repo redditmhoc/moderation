@@ -19,6 +19,7 @@ function ordinal($number) {
     <div class="ui clearing">
         <h1 class="ui left floated header">View Warnings</h1>
         <a href="{{route('actions.createwarning')}}" class="ui right floated primary button">Create Warning</a>
+        <a href="{{route('actions.exportwarnings')}}" class="ui right floated button">Export Warnings</a>
     </div>
 </div>
 <br>
