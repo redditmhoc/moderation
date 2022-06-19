@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Ban;
+use App\Models\ImageAttachment;
+use App\Policies\BanPolicy;
+use App\Policies\ImageAttachmentPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,6 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Ban::class => BanPolicy::class,
+        App\Models\ModerationActions\Ban::class => \App\Policies\ModerationActions\BanPolicy::class,
+        ImageAttachment::class => ImageAttachmentPolicy::class,
     ];
 
     /**
@@ -25,6 +32,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::after(function ($user, $ability) {
+            return $user->hasRole('Administrator');
+        });
     }
 }

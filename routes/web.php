@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication\RedditOAuthController;
+use App\Http\Controllers\ModerationActions\BansController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/** Landing page */
 Route::get('/', function () {
+    if (auth()->check() && auth()->user()->can('access site')) {
+        return redirect()->route('site.index');
+    }
     return view('welcome');
 });
 
+Route::prefix('site')->name('site')->middleware('can:access site')->group(function () {
+
+    Route::get('/', function () {
+        return view('site.index', ['_pageTitle' => 'Start']);
+    })->name('.index');
+
+    /** Moderation actions */
+    Route::prefix('moderation-actions')->name('.moderation-actions')->middleware('can:view moderation actions')->group(function () {
+
+        /** Bans */
+        Route::prefix('bans')->name('.bans')->controller(BansController::class)->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/{ban}', 'show')->name('.show');
+        });
+
+    });
+
+});
+
+/** Authentication */
 Route::prefix('auth')->name('auth')->group(function () {
 
    /** OAuth */
