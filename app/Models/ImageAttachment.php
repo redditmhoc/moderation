@@ -27,11 +27,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ImageAttachment whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ImageAttachment whereUserId($value)
  * @mixin \Eloquent
+ * @property-read Model|\Eloquent $attachable
+ * @property-read \App\Models\User|null $user
  */
 class ImageAttachment extends Model
 {
     protected $keyType = 'string';
     public $incrementing = false;
+
+    protected $fillable = ['id', 'user_id', 'attachable_type', 'attachable_id', 'caption', 'url'];
 
     public function attachable()
     {

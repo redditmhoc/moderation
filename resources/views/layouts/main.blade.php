@@ -26,6 +26,9 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.semanticui.min.css">
         <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
+        <!-- Livewire -->
+        @livewireStyles
+
         <!--Custom styles-->
         <style>
             body {
@@ -53,6 +56,25 @@
     </head>
     <body>
         <div id="site">
+            @if (session()->has('top-positive-msg') || session()->has('top-info-msg') || session()->has('top-negative-msg'))
+                <div class="ui container" style="margin-top: 20px;">
+                    @if (session()->has('top-positive-msg'))
+                        <div class="ui positive message">
+                            {{ session('top-positive-msg') }}
+                        </div>
+                    @endif
+                    @if (session()->has('top-info-msg'))
+                        <div class="ui info message">
+                            {{ session('top-info-msg') }}
+                        </div>
+                    @endif
+                    @if (session()->has('top-negative-msg'))
+                        <div class="ui negative message">
+                            {{ session('top-negative-msg') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
             @yield('content')
         </div>
         <div id="footer" class="ui inverted vertical footer segment">
@@ -76,4 +98,5 @@
         </div>
     </body>
     @yield('scripts')
+    @livewireScripts
 </html>

@@ -10,7 +10,7 @@
                 <div class="menu">
                     <div class="header">Select one</div>
                     @can('create bans')
-                        <a href="#" class="item">Ban</a>
+                        <a href="{{ route('site.moderation-actions.bans.create') }}" class="item">Ban</a>
                     @endcan
                     @can('create mutes')
                         <a href="#" class="item">Mute</a>
@@ -62,7 +62,7 @@
                         </div>
                         <a id="viewDataModalB" class="item" href="#"><i class="user icon"></i> View Your Data</a>
 
-                        <a href="" class="item"><i class="key icon"></i> Sign Out</a>
+                        <a href="{{ route('auth.logout') }}" class="item"><i class="key icon"></i> Logout</a>
                     </div>
                 </div>
             @endauth

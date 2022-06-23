@@ -20,7 +20,7 @@
                 <div class="two-wide-column">
                     <h3>Bans</h3>
                     @can('create bans')
-                        <a href="#" class="ui primary button">Create Ban</a>
+                        <a href="{{ route('site.moderation-actions.bans.create') }}" class="ui primary button">Create Ban</a>
                     @endcan
                     @can('view moderation actions')
                         <a href="{{ route('site.moderation-actions.bans.index') }}" class="ui button">View Bans</a>

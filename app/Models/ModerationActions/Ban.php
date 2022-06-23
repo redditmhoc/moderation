@@ -56,6 +56,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @mixin \Eloquent
  * @property-read int|null $duration_in_days
  * @property-read Model|\Eloquent $imageAttachments
+ * @property-read bool $is_current
+ * @property-read int|null $image_attachments_count
+ * @property-read int|null $days_remaining
  */
 class Ban extends Model
 {
@@ -81,6 +84,17 @@ class Ban extends Model
     {
         if (! $this->end_at) return null;
         return $this->start_at->diffInDays($this->end_at);
+    }
+
+    public function getIsCurrentAttribute(): bool
+    {
+        return ($this->end_at != null) && ($this->end_at > now());
+    }
+
+    public function getDaysRemainingAttribute(): ?int
+    {
+        if (! $this->is_current) return null;
+        return $this->end_at->diffInDays(now());
     }
 
     /**

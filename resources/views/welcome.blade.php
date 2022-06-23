@@ -11,7 +11,7 @@
                     <div class="ui negative message">
                         You do not have permissions to access this site.
                     </div>
-                    <a href="#" class="ui red button">Logout</a>
+                    <a href="{{ route('auth.logout') }}" class="ui red button">Logout</a>
                 @endcan
             @endauth
             @guest

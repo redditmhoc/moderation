@@ -2,43 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreImageAttachmentRequest;
 use App\Models\ImageAttachment;
 use Illuminate\Http\Request;
 
 class ImageAttachmentsController extends Controller
 {
-    public function index()
+    public function create(Request $request)
     {
-        //
-    }
+        if (! $request->has('attachable_type') || ! $request->has('attachable_id')) {
+            // Throw exception
+            abort(400, 'Attachable data invalid');
+        }
 
-    public function create()
-    {
-        //
-    }
+        $class = 'App\\Models\\' . $request->get('attachable_type');
+        $attachable = $class::where('id', $request->get('attachable_id'))->first();
 
-    public function store(Request $request)
-    {
-        //
-    }
+        if (! $attachable) {
+            // Throw exception
+            abort(404, 'Attachable not found.');
+        }
 
-    public function show(ImageAttachment $imageAttachment)
-    {
-        //
-    }
-
-    public function edit(ImageAttachment $imageAttachment)
-    {
-        //
-    }
-
-    public function update(Request $request, ImageAttachment $imageAttachment)
-    {
-        //
+        return view('site.image-attachments.create', [
+            'attachable' => $attachable,
+            'attachable_type' => $request->get('attachable_type'),
+            'attachable_id' => $request->get('attachable_id')
+        ]);
     }
 
     public function destroy(ImageAttachment $imageAttachment)
     {
-        //
+        $imageAttachment->delete();
+        return redirect()->back();
     }
 }

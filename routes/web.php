@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Authentication\LogoutController;
 use App\Http\Controllers\Authentication\RedditOAuthController;
+use App\Http\Controllers\ImageAttachmentsController;
 use App\Http\Controllers\ModerationActions\BansController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 /** Landing page */
-Route::get('/', function () {
-    if (auth()->check() && auth()->user()->can('access site')) {
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    if (auth()->check() && auth()->user()->can('access site') && ! $request->has('sR')) {
         return redirect()->route('site.index');
     }
     return view('welcome');
@@ -35,10 +37,20 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
         /** Bans */
         Route::prefix('bans')->name('.bans')->controller(BansController::class)->group(function () {
             Route::get('/', 'index')->name('.index');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/store', 'store')->name('.store');
+            Route::get('/{ban}/edit', 'edit')->name('.edit');
+            Route::post('/{ban}/edit', 'update')->name('.update');
             Route::get('/{ban}', 'show')->name('.show');
         });
 
     });
+
+    Route::resource('image-attachments', ImageAttachmentsController::class)->only(
+        ['create', 'destroy']
+    )->names([
+        'create' => '.image-attachments.create', 'destroy' => '.image-attachments.destroy'
+    ]);
 
 });
 
@@ -57,5 +69,7 @@ Route::prefix('auth')->name('auth')->group(function () {
        });
 
     });
+
+    Route::get('/logout', LogoutController::class)->name('.logout');
 
 });
