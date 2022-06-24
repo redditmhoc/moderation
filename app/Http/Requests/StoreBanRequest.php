@@ -25,6 +25,6 @@ class StoreBanRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->can('create bans');
+        return $this->user()->can('create bans');
     }
 }

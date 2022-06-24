@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Ban;
+use App\Models\ModerationActions\Ban;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -17,36 +17,36 @@ class BanPolicy
 
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can('view moderation actions');
     }
 
-    public function view(User $user, Ban $ban): bool
+    public function view(User $user): bool
     {
-        //
+        return $user->can('view moderation actions');
     }
 
     public function create(User $user): bool
     {
-        //
+        return $user->can('create bans');
     }
 
     public function update(User $user, Ban $ban): bool
     {
-        //
+        return $user->can('edit all bans') || $ban->responsibleUser === $user;
     }
 
     public function delete(User $user, Ban $ban): bool
     {
-        //
+        return $user->can('delete all bans') || $ban->responsibleUser === $user;
     }
 
-    public function restore(User $user, Ban $ban): bool
+    public function overturn(User $user, Ban $ban): bool
     {
-        //
+        return !$ban->overturned && $user->can('overturn bans');
     }
 
-    public function forceDelete(User $user, Ban $ban): bool
+    public function overturnPermanent(User $user, Ban $ban): bool
     {
-        //
+        return !$ban->overturned && $user->can('overturn permanent bans');
     }
 }

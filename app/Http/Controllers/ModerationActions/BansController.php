@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ModerationActions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OverturnBanRequest;
 use App\Http\Requests\StoreBanRequest;
 use App\Http\Requests\UpdateBanRequest;
 use App\Models\ModerationActions\Ban;
@@ -19,6 +20,7 @@ class BansController extends Controller
             'currentBans' => Ban::current()->get(),
             'permanentBans' => Ban::permanent()->get(),
             'expiredBans' => Ban::expired()->get(),
+            'overturnedBans' => Ban::overturned()->get(),
             '_pageTitle' => 'View Bans'
         ]);
     }
@@ -97,5 +99,32 @@ class BansController extends Controller
     public function destroy(Ban $ban)
     {
         //
+    }
+
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function overturn(OverturnBanRequest $request, Ban $ban)
+    {
+        if ($ban->permanent) {
+            $this->authorize('overturnPermanent', $ban);
+        } else {
+            $this->authorize('overturn', $ban);
+        }
+
+        $ban->update([
+            'overturned' => true,
+            'overturned_by_user_id' => $request->user()->id,
+            'overturned_at' => now()->roundMinute(),
+            'overturned_reason' => $request->get('reason'),
+            $ban->update(['end_at' => now()->roundMinute()])
+        ]);
+        if ($ban->permanent) {
+            $ban->update(['permanent' => false]);
+        }
+        $ban->save();
+
+        session()->flash('top-info-msg', 'Ban overturned.');
+        return redirect()->route('site.moderation-actions.bans.show', $ban);
     }
 }

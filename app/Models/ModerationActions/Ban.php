@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\ModerationActions\Ban
@@ -59,6 +60,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read bool $is_current
  * @property-read int|null $image_attachments_count
  * @property-read int|null $days_remaining
+ * @property int $overturned
+ * @property string|null $overturned_by_user_id
+ * @property string|null $overturned_reason
+ * @property string|null $overturned_at
+ * @method static Builder|Ban whereOverturned($value)
+ * @method static Builder|Ban whereOverturnedAt($value)
+ * @method static Builder|Ban whereOverturnedByUserId($value)
+ * @method static Builder|Ban whereOverturnedReason($value)
+ * @property-read User|null $overturnedByUser
  */
 class Ban extends Model
 {
@@ -68,11 +78,11 @@ class Ban extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'reddit_username', 'discord_username', 'discord_id', 'aliases', 'start_at', 'end_at', 'responsible_user_id', 'summary', 'comments', 'evidence', 'permanent', 'platforms', 'user_can_appeal'
+        'id', 'reddit_username', 'discord_username', 'discord_id', 'aliases', 'start_at', 'end_at', 'responsible_user_id', 'summary', 'comments', 'evidence', 'permanent', 'platforms', 'user_can_appeal', 'overturned', 'overturned_reason', 'overturned_by_user_id', 'overturned_at'
     ];
 
     protected $dates = [
-        'start_at', 'end_at'
+        'start_at', 'end_at', 'overturned_at'
     ];
 
     /**
@@ -86,11 +96,21 @@ class Ban extends Model
         return $this->start_at->diffInDays($this->end_at);
     }
 
+    /**
+     * Return whether the ban is current or not.
+     *
+     * @return bool
+     */
     public function getIsCurrentAttribute(): bool
     {
         return ($this->end_at != null) && ($this->end_at > now());
     }
 
+    /**
+     * Return the days remaining of the ban, if current.
+     *
+     * @return int|null
+     */
     public function getDaysRemainingAttribute(): ?int
     {
         if (! $this->is_current) return null;
@@ -107,28 +127,67 @@ class Ban extends Model
         return $this->belongsTo(User::class, 'responsible_user_id');
     }
 
-    public function imageAttachments()
+    /**
+     * Return the user responsible for overturning the ban.
+     *
+     * @return BelongsTo
+     */
+    public function overturnedByUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'overturned_by_user_id');
+    }
+
+    /**
+     * Return images attached to the ban.
+     *
+     * @return MorphMany
+     */
+    public function imageAttachments(): MorphMany
     {
         return $this->morphMany(ImageAttachment::class, 'attachable');
     }
 
+    /**
+     * Scope to current bans.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeCurrent(Builder $query): Builder
     {
         return $query->where('permanent', false)->whereNotNull('end_at')->whereDate('end_at', '>', now());
     }
 
+    /**
+     * Scope to permanent bans.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopePermanent(Builder $query): Builder
     {
         return $query->where('permanent', true);
     }
 
+    /**
+     * Scope to expired bans.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeExpired(Builder $query): Builder
     {
-        return $query->where('permanent', false)->whereNotNull('end_at')->whereDate('end_at', '<', now());
+        return $query->where('permanent', false)->whereNotNull('end_at')->whereDate('end_at', '<', now())->where('overturned', false);
     }
 
-    public function scopeOverturned(Builder $query)
+    /**
+     * Scope to overturned bans.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOverturned(Builder $query): Builder
     {
-        throw new \Exception('Not implemented');
+        return $query->where('overturned', true);
     }
 }

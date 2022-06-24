@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Ban;
+use App\Models\ModerationActions\Ban;
 use App\Models\ImageAttachment;
 use App\Policies\BanPolicy;
 use App\Policies\ImageAttachmentPolicy;
@@ -19,7 +19,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Ban::class => BanPolicy::class,
-        App\Models\ModerationActions\Ban::class => \App\Policies\ModerationActions\BanPolicy::class,
         ImageAttachment::class => ImageAttachmentPolicy::class,
     ];
 

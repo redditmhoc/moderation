@@ -41,6 +41,7 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
             Route::post('/store', 'store')->name('.store');
             Route::get('/{ban}/edit', 'edit')->name('.edit');
             Route::post('/{ban}/edit', 'update')->name('.update');
+            Route::post('/{ban}/overturn', 'overturn')->name('.overturn');
             Route::get('/{ban}', 'show')->name('.show');
         });
 

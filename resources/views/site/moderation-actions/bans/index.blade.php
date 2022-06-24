@@ -15,6 +15,7 @@
                 <a class="item active" data-tab="current">Current</a>
                 <a class="item" data-tab="permanent">Permanent</a>
                 <a class="item" data-tab="expired">Expired</a>
+                <a class="item" data-tab="overturned">Overturned</a>
             </div>
             <div class="ui bottom attached tab segment active" data-tab="current">
                 <table class="ui celled table">
@@ -84,6 +85,28 @@
                             <td>{{ $ban->start_at->toDayDateTimeString() }}</td>
                             <td>{{ $ban->end_at->toDayDateTimeString() }}</td>
                             <td>{{ ucwords(strtolower($ban->platforms)) }}</td>
+                            <td>
+                                <a href="{{ route('site.moderation-actions.bans.show', $ban) }}">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="overturned">
+                <table class="ui celled table">
+                    <thead>
+                    <th>Reddit username</th>
+                    <th>Discord username</th>
+                    <th>Overturned at</th>
+                    <th>Actions</th>
+                    </thead>
+                    <tbody>
+                    @foreach ($overturnedBans as $ban)
+                        <tr>
+                            <td>{{ $ban->reddit_username }}</td>
+                            <td>{{ $ban->discord_username ?? 'N/A' }}</td>
+                            <td>{{ $ban->overturned_at->toDayDateTimeString() }}</td>
                             <td>
                                 <a href="{{ route('site.moderation-actions.bans.show', $ban) }}">View</a>
                             </td>

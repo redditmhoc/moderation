@@ -17,6 +17,6 @@ class StoreImageAttachmentRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->can('create image attachments');
+        return $this->user()->can('create image attachments');
     }
 }

@@ -27,7 +27,7 @@ class ImageAttachmentPolicy
 
     public function create(User $user): bool
     {
-        //
+        return $user->can('create image attachments');
     }
 
     public function update(User $user, ImageAttachment $imageAttachment): bool

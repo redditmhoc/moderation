@@ -4,6 +4,30 @@
     <div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
         <div class="eight column wide">
             <a href="{{ route('site.moderation-actions.bans.index') }}">◀ View Bans</a><br>
+            @if ($errors->any())
+                <div class="ui negative message">
+                    <div class="header">
+                        There were some errors with your submission
+                    </div>
+                    <div class="ui bulleted list">
+                        @foreach ($errors->all() as $e)
+                            <div class="item">
+                                {{ $e }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+            <a href="{{ route('site.moderation-actions.bans.edit', $ban) }}" class="ui right floated primary basic button"><i class="edit icon"></i>Edit</a>
+            @if ($ban->permanent)
+                @can('overturnPermanent', $ban)
+                    <button onclick="openOverturnModal()" class="ui right floated basic button">Overturn</button>
+                @endcan
+            @else
+                @can('overturn', $ban)
+                    <button onclick="openOverturnModal()" class="ui right floated basic button">Overturn</button>
+                @endcan
+            @endif
             <div class="ui clearing" style="margin-top: 2em;">
                 <h1 class="ui header">
                     Ban: {{ $ban->reddit_username }}
@@ -15,9 +39,37 @@
                         @endif
                     </div>
                 </h1>
-                <a href="{{ route('site.moderation-actions.bans.edit', $ban) }}" class="ui right floated primary basic button"><i class="edit icon"></i>Edit</a>
             </div>
-
+            @if ($ban->overturned)
+                <div class="ui segment">
+                    <h3 class="ui red dividing header">
+                        <i class="times circle outline icon"></i>
+                        <div class="content">
+                            Ban has been overturned
+                        </div>
+                    </h3>
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="user icon"></i>
+                            <div class="content">
+                                <i style="color:{{$ban->overturnedByUser->roles()->first()->colour_hex}}" class="circle icon"></i> {{ $ban->overturnedByUser->username }}
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="question icon"></i>
+                            <div class="content">
+                                {{ $ban->overturned_reason }}
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="calendar icon"></i>
+                            <div class="content">
+                                {{ $ban->overturned_at->toDayDateTimeString() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <h3 class="ui dividing header">
                 User information
             </h3>
@@ -146,4 +198,34 @@
             </div>
         </div>
     </div>
+    @can('overturn', $ban)
+        <div id="overturnModal" class="ui modal">
+            <div class="header">Overturn this ban</div>
+            <div class="content">
+                <div class="ui form">
+                    <form action="{{ route('site.moderation-actions.bans.overturn', $ban) }}" method="post">
+                        @csrf
+                        <div class="required field">
+                            <label class="ui inverted" for="overturnReason">Enter reason for overturn</label>
+                            <input type="text" id="overturnReason" name="reason" placeholder="Appeal successful...">
+                        </div>
+                        <div>
+                            @if ($ban->permanent)
+                                <b>This is a permanent ban.</b>
+                            @endif
+                        </div>
+                        <button type="submit" class="ui red button">Overturn</button>
+                        <a onclick="openOverturnModal()" class="ui cancel button">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            function openOverturnModal() {
+                $('#overturnModal')
+                    .modal('toggle')
+                ;
+            }
+        </script>
+    @endcan
 @endsection

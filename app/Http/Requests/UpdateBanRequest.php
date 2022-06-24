@@ -24,6 +24,6 @@ class UpdateBanRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return auth()->check() && (auth()->user()->can('edit all bans') || auth()->id() == $this->responsible_user_id);
+        return $this->user()->can('update', $this->ban);
     }
 }

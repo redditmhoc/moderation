@@ -34,7 +34,7 @@
                         <input type="text" name="discord_username" placeholder="meeyawk#1234" id="discord_username" value="{{ old('discord_username') }}">
                     </div>
                     <div class="field">
-                        <label for="discord_id">Discord snowflake ID <a href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">(how?)</a></label>
+                        <label for="discord_id">Discord snowflake ID <a target="_blank" href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">(how?)</a></label>
                         <input type="text" name="discord_id" placeholder="412754716884336650" id="discord_id" value="{{ old('discord_id') }}">
                     </div>
                 </div>
