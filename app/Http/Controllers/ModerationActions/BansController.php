@@ -106,12 +106,18 @@ class BansController extends Controller
      */
     public function overturn(OverturnBanRequest $request, Ban $ban)
     {
+        /**
+         * Authorise based off permanency
+         */
         if ($ban->permanent) {
             $this->authorize('overturnPermanent', $ban);
         } else {
             $this->authorize('overturn', $ban);
         }
 
+        /**
+         * Update ban with overturn details and save
+         */
         $ban->update([
             'overturned' => true,
             'overturned_by_user_id' => $request->user()->id,
@@ -124,6 +130,7 @@ class BansController extends Controller
         }
         $ban->save();
 
+        /** Return and flash message */
         session()->flash('top-info-msg', 'Ban overturned.');
         return redirect()->route('site.moderation-actions.bans.show', $ban);
     }

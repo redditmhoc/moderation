@@ -74,3 +74,4 @@ Route::prefix('auth')->name('auth')->group(function () {
     Route::get('/logout', LogoutController::class)->name('.logout');
 
 });
+Route::impersonate();

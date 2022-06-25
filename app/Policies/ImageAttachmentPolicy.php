@@ -15,16 +15,6 @@ class ImageAttachmentPolicy
         //
     }
 
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    public function view(User $user, ImageAttachment $imageAttachment): bool
-    {
-        //
-    }
-
     public function create(User $user): bool
     {
         return $user->can('create image attachments');
@@ -32,21 +22,11 @@ class ImageAttachmentPolicy
 
     public function update(User $user, ImageAttachment $imageAttachment): bool
     {
-        //
+        return $user->can('create image attachments');
     }
 
     public function delete(User $user, ImageAttachment $imageAttachment): bool
     {
-        //
-    }
-
-    public function restore(User $user, ImageAttachment $imageAttachment): bool
-    {
-        //
-    }
-
-    public function forceDelete(User $user, ImageAttachment $imageAttachment): bool
-    {
-        //
+        return $user->can('delete image attachments');
     }
 }

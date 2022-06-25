@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Models\ModerationActions\Ban;
 use App\Models\ImageAttachment;
-use App\Policies\BanPolicy;
+use App\Policies\ModerationActions\BanPolicy;
 use App\Policies\ImageAttachmentPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
