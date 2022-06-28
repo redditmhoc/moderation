@@ -4,17 +4,16 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBanRequest extends FormRequest
+class UpdateMuteRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'reddit_username' => 'required',
             'discord_username' => 'nullable|regex:/^.{3,32}#[0-9]{4}$/',
             'discord_id' => 'nullable|numeric',
             'aliases' => 'nullable',
             'start_at' => 'required|date',
-            'end_at' => 'nullable|required_without:permanent|date|after:start_at',
+            'end_at' => 'required|date|after:start_at',
             'platforms' => 'required',
             'summary' => 'required',
             'comments' => 'nullable',
@@ -25,6 +24,6 @@ class StoreBanRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()->can('create bans');
+        return $this->user()->can('update', $this->mute);
     }
 }

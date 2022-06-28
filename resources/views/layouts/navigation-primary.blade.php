@@ -13,7 +13,7 @@
                         <a href="{{ route('site.moderation-actions.bans.create') }}" class="item">Ban</a>
                     @endcan
                     @can('create mutes')
-                        <a href="#" class="item">Mute</a>
+                        <a href="{{ route('site.moderation-actions.mutes.create') }}" class="item">Mute</a>
                     @endcan
                     @can('create notes')
                         <a href="#" class="item">Note</a>
@@ -29,7 +29,7 @@
                     <div class="header">Moderation Actions</div>
                     @can('view moderation actions')
                         <a href="{{ route('site.moderation-actions.bans.index') }}" class="item">Bans</a>
-                        <a href="#" class="{{Request::is('actions/view/warnings') || Request::is('actions/view/warning/*') || Request::is('actions/create/warning') ? 'active' : ''}} item">Mutes</a>
+                        <a href="{{ route('site.moderation-actions.mutes.index') }}" class="item">Mutes</a>
                     @endcan
                     <div class="divider"></div>
                     <div class="header">Other</div>
@@ -49,8 +49,8 @@
         </div>
         @endrole
         <div class="right menu">
-            <a href="#" class="ui item">
-                <i class="search icon"></i> Search
+            <a onclick="toggleSearchModal()" class="ui item">
+                <i class="search icon"></i> Search user history
             </a>
             <div class="divider"></div>
             @auth
@@ -74,11 +74,29 @@
         </div>
     </div>
 </div>
+<div id="searchModal" class="ui modal">
+    <i class="close icon"></i>
+    <div class="content">
+        <h3 class="ui header">Search for bans or mutes by username</h3>
+        <livewire:search-user-history/>
+    </div>
+</div>
 @section('scripts')
     <script defer>
         $('.ui.dropdown')
             .dropdown()
         ;
+
+        $('.menu .item')
+            .tab()
+        ;
+
+        function toggleSearchModal() {
+            $('#searchModal')
+                .modal('toggle')
+            ;
+        }
+
 
         $(document).on("click", "#viewDataModalB", function(){
             $('#viewDataModal')

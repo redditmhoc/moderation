@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ModerationActions\Ban;
+use App\Models\ModerationActions\Mute;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         Ban::factory()->count(25);
         Ban::factory()->count(5)->permanent()->create();
         Ban::factory()->permanent()->cannotAppeal()->create();
+        Mute::factory()->count(35)->discordOnly()->create();
     }
 }

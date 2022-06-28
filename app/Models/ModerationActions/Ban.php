@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\ModerationActions\Ban
@@ -75,10 +77,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Ban whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Ban withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Ban withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
+ * @property-read int|null $activities_count
  */
 class Ban extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -161,7 +165,7 @@ class Ban extends Model
      */
     public function scopeCurrent(Builder $query): Builder
     {
-        return $query->where('permanent', false)->whereNotNull('end_at')->whereDate('end_at', '>', now());
+        return $query->where('permanent', false)->whereNotNull('end_at')->where('end_at', '>', now());
     }
 
     /**
@@ -183,7 +187,7 @@ class Ban extends Model
      */
     public function scopeExpired(Builder $query): Builder
     {
-        return $query->where('permanent', false)->whereNotNull('end_at')->whereDate('end_at', '<', now())->where('overturned', false);
+        return $query->where('permanent', false)->whereNotNull('end_at')->where('end_at', '<', now())->where('overturned', false);
     }
 
     /**
@@ -195,5 +199,13 @@ class Ban extends Model
     public function scopeOverturned(Builder $query): Builder
     {
         return $query->where('overturned', true);
+    }
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }

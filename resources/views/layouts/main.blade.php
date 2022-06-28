@@ -32,11 +32,12 @@
         <!--Custom styles-->
         <style>
             body {
-                background-color: #ededed;
+                /*background-color: #ededed;*/
                 display: flex;
                 min-height: 100vh;
                 flex-direction: column;
             }
+
             body > .grid {
                 height: 100%;
             }
@@ -49,8 +50,24 @@
                 flex: 1;
             }
 
-            .mhoc-green-text {
+            span.ui.mhoc.text, .ui.mhoc.header {
                 color: rgb(0, 107, 60) !important;;
+            }
+
+            .ui.mhoc.button {
+                background-color: rgb(0, 107, 60) !important;
+                color: #fff;
+                text-shadow: none;
+                background-image: none;
+                box-shadow: 0 0 0 0 rgb(34 36 38 / 15%) inset;
+            }
+
+            .ui.mhoc.button:hover {
+                background-color: rgb(0, 90, 60) !important;
+            }
+
+            .ui.mhoc.button:active {
+                background-color: rgb(0, 80, 60) !important;
             }
         </style>
     </head>
@@ -81,17 +98,7 @@
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
                     <div class="eight wide column">
-                        MHoC Moderation version {{ config('app.version') }}
-                    </div>
-                    <div class="eight wide column">
-                        <a href="" class="ui inverted button">
-                            <i class="github icon"></i>
-                            GitHub
-                        </a>
-                        <a href="" class="ui inverted button">
-                            <i class="flag icon"></i>
-                            Report issue or bug
-                        </a>
+                        {{ config('app.name') }} version {{ config('app.version') }}
                     </div>
                 </div>
             </div>

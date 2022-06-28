@@ -3,9 +3,9 @@
     @include('layouts.navigation-primary')
     <div style="margin-top: 10px; margin-bottom: 10px;" class="ui grid container">
         <div class="eight column wide">
-            <a href="{{ route('site.moderation-actions.bans.index') }}">◀ View Bans</a><br>
-            <h1 class="ui header">Create Ban</h1>
-            <form action="{{ route('site.moderation-actions.bans.store') }}" method="post" class="ui form">
+            <a href="{{ route('site.moderation-actions.mutes.index') }}">◀ View Mutes</a><br>
+            <h1 class="ui header">Create Mute</h1>
+            <form action="{{ route('site.moderation-actions.mutes.store') }}" method="post" class="ui form">
                 @if ($errors->any())
                     <div class="ui negative message">
                         <div class="header">
@@ -63,21 +63,9 @@
                             <label for="start_at">Start date/time</label>
                             <input type="date" name="start_at" value="{{ old('start_at') }}" class="flatpickr" placeholder="Select" id="start_at">
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label for="end_at">End date/time <a href="https://www.timeanddate.com/date/dateadd.html" target="_blank">(calculator to add months/days)</a> (leave blank if selecting permanent)</label>
                             <input type="date" name="end_at" value="{{ old('end_at') }}" class="flatpickr" placeholder="Select" id="end_at">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui toggle @if(old('permanent') != null) checked @endif checkbox">
-                            <input type="checkbox" name="permanent" @if(old('permanent') != null) checked="" @endif class="hidden">
-                            <label>Permanent ban</label>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui toggle checkbox @if(old('user_can_appeal') != null) checked @endif checkbox">
-                            <input type="checkbox" name="user_can_appeal" @if(old('user_can_appeal') != null) checked="" @endif class="hidden">
-                            <label>User can appeal ban</label>
                         </div>
                     </div>
                     <div class="required field">
@@ -119,10 +107,10 @@
                         <input type="url" value="{{ old('evidence') }}" name="evidence" id="evidence" placeholder="URL to evidence document (e.g. Gdocs, Discord message URL)">
                     </div>
                     <div class="ui message">
-                        Image evidence can be attached to the ban after you have submitted it.
+                        Image evidence can be attached to the mute after you have submitted it.
                     </div>
                 </div>
-                <button type="submit" class="ui primary button">Create Ban</button>
+                <button type="submit" class="ui primary button">Create Mute</button>
             </form>
         </div>
     </div>

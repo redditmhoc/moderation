@@ -4,6 +4,7 @@ use App\Http\Controllers\Authentication\LogoutController;
 use App\Http\Controllers\Authentication\RedditOAuthController;
 use App\Http\Controllers\ImageAttachmentsController;
 use App\Http\Controllers\ModerationActions\BansController;
+use App\Http\Controllers\ModerationActions\MutesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,17 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
             Route::post('/{ban}/overturn', 'overturn')->name('.overturn');
             Route::post('/{ban}/delete', 'delete')->name('.delete');
             Route::get('/{ban}', 'show')->name('.show');
+        });
+
+        /** Mutes */
+        Route::prefix('mutes')->name('.mutes')->controller(MutesController::class)->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/store', 'store')->name('.store');
+            Route::get('/{mute}/edit', 'edit')->name('.edit');
+            Route::post('/{mute}/edit', 'update')->name('.update');
+            Route::post('/{mute}/delete', 'delete')->name('.delete');
+            Route::get('/{mute}', 'show')->name('.show');
         });
 
     });
