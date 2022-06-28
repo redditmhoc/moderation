@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\IssueReport;
 use App\Models\ModerationActions\Ban;
 use App\Models\ImageAttachment;
+use App\Policies\IssueReportPolicy;
 use App\Policies\ModerationActions\BanPolicy;
 use App\Policies\ImageAttachmentPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Ban::class => BanPolicy::class,
         ImageAttachment::class => ImageAttachmentPolicy::class,
+        IssueReport::class => IssueReportPolicy::class,
     ];
 
     /**

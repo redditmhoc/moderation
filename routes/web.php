@@ -42,6 +42,7 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
             Route::get('/{ban}/edit', 'edit')->name('.edit');
             Route::post('/{ban}/edit', 'update')->name('.update');
             Route::post('/{ban}/overturn', 'overturn')->name('.overturn');
+            Route::post('/{ban}/delete', 'delete')->name('.delete');
             Route::get('/{ban}', 'show')->name('.show');
         });
 

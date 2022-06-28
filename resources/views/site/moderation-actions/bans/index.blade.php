@@ -8,8 +8,8 @@
                     View Bans
                 </h1>
                 <a href="{{ route('site.moderation-actions.bans.create') }}" class="ui right floated primary button">Create Ban</a>
-                <a href="#" class="ui right floated button">Import Bans</a>
-                <a href="#" class="ui right floated button">Export Bans</a>
+{{--                <a href="#" class="ui right floated button">Import Bans</a>--}}
+{{--                <a href="#" class="ui right floated button">Export Bans</a>--}}
             </div>
             <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="current">Current</a>

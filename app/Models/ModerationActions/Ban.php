@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\ModerationActions\Ban
@@ -69,10 +70,15 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static Builder|Ban whereOverturnedByUserId($value)
  * @method static Builder|Ban whereOverturnedReason($value)
  * @property-read User|null $overturnedByUser
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|Ban onlyTrashed()
+ * @method static Builder|Ban whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Ban withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Ban withoutTrashed()
  */
 class Ban extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $keyType = 'string';
     public $incrementing = false;

@@ -3,6 +3,7 @@
 namespace Database\Factories\ModerationActions;
 
 use App\Enums\PlatformEnum;
+use App\Models\ImageAttachment;
 use App\Models\ModerationActions\Ban;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,10 +28,10 @@ class BanFactory extends Factory
             "aliases" => $this->faker->userName,
             "start_at" => now(),
             "end_at" => now()->addMonth(),
-            "responsible_user_id" => User::first()->id,
+            "responsible_user_id" => User::all()->random()->id,
             "summary" => $this->faker->sentence,
             "comments" => $this->faker->realText,
-            "evidence" => $this->faker->imageUrl,
+            "evidence" => $this->faker->url,
             "permanent" => false,
             "platforms" => PlatformEnum::Both,
             "user_can_appeal" => true
@@ -91,6 +92,20 @@ class BanFactory extends Factory
             return [
                 'platforms' => PlatformEnum::Discord,
             ];
+        });
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Ban $ban) {
+            ImageAttachment::create([
+                'id' => Str::uuid(),
+                'caption' => $this->faker->sentence,
+                'url' => $this->faker->imageUrl,
+                'user_id' => $ban->responsible_user_id,
+                'attachable_type' => 'App\\Models\\ModerationActions\\Ban',
+                'attachable_id' => $ban->id
+            ]);
         });
     }
 }

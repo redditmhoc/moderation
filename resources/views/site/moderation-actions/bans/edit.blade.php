@@ -98,14 +98,14 @@
                     </div>
                     <div class="field">
                         <label for="comments">Commentary</label>
-                        <textarea id="comments" value="{{ old('comments') ?? $ban->comments }}" name="comments" placeholder="Type any extra comments here to help explain the reasoning"></textarea>
+                        <textarea id="comments" name="comments" placeholder="Type any extra comments here to help explain the reasoning">{{ old('comments') ?? $ban->comments }}</textarea>
                     </div>
                     <div class="field">
                         <label for="evidence">Evidence document</label>
                         <input type="url" value="{{ old('evidence') ?? $ban->evidence }}" name="evidence" id="evidence" placeholder="URL to evidence document">
                     </div>
                 </div>
-                <button type="submit" class="ui primary button">Create Ban</button>
+                <button type="submit" class="ui primary button">Edit Ban</button>
             </form>
         </div>
     </div>

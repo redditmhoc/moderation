@@ -14,8 +14,14 @@ use Illuminate\Support\Str;
 
 class BansController extends Controller
 {
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index()
     {
+        //Authorise
+        $this->authorize('viewAny', Ban::class);
+
         return view('site.moderation-actions.bans.index', [
             'currentBans' => Ban::current()->get(),
             'permanentBans' => Ban::permanent()->get(),
@@ -25,8 +31,15 @@ class BansController extends Controller
         ]);
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function create()
     {
+        // Authorise
+        $this->authorize('create', Ban::class);
+
+        // Return view
         return view('site.moderation-actions.bans.create', [
             'moderators' => User::role(['Administrator', 'Quadrumvirate', 'Moderator'])->get(),
             '_pageTitle' => 'Create Ban'
@@ -54,16 +67,30 @@ class BansController extends Controller
         return redirect()->route('site.moderation-actions.bans.show', $ban);
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function show(Ban $ban)
     {
+        // Authorise
+        $this->authorize('view', $ban);
+
+        // Return view
         return view('site.moderation-actions.bans.show', [
             'ban' => $ban,
             '_pageTitle' => "Ban of $ban->reddit_username"
         ]);
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function edit(Ban $ban)
     {
+        // Authorise
+        $this->authorize('update', $ban);
+
+        // Return view
         return view('site.moderation-actions.bans.edit', [
             'moderators' => User::role(['Administrator', 'Quadrumvirate', 'Moderator'])->get(),
             'ban' => $ban,
@@ -96,9 +123,22 @@ class BansController extends Controller
         return redirect()->route('site.moderation-actions.bans.show', $ban);
     }
 
-    public function destroy(Ban $ban)
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function delete(Ban $ban)
     {
-        //
+        // Authorise
+        $this->authorize('delete', $ban);
+
+        if ($ban->trashed()) {
+            abort(403, 'Already trashed');
+        }
+
+        $ban->delete();
+
+        session()->flash('top-info-msg', 'Ban deleted.');
+        return redirect()->route('site.moderation-actions.bans.index');
     }
 
     /**

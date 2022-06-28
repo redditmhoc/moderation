@@ -21,11 +21,11 @@
             <a href="{{ route('site.moderation-actions.bans.edit', $ban) }}" class="ui right floated primary basic button"><i class="edit icon"></i>Edit</a>
             @if ($ban->permanent)
                 @can('overturnPermanent', $ban)
-                    <button onclick="openOverturnModal()" class="ui right floated basic button">Overturn</button>
+                    <button onclick="openOverturnModal()" class="ui right floated red basic button"><i class="times circle outline icon"></i> Overturn</button>
                 @endcan
             @else
                 @can('overturn', $ban)
-                    <button onclick="openOverturnModal()" class="ui right floated basic button">Overturn</button>
+                    <button onclick="openOverturnModal()" class="ui right floated red basic button"><i class="times circle outline icon"></i> Overturn</button>
                 @endcan
             @endif
             <div class="ui clearing" style="margin-top: 2em;">
@@ -52,7 +52,7 @@
                         <div class="item">
                             <i class="user icon"></i>
                             <div class="content">
-                                <i style="color:{{$ban->overturnedByUser->roles()->first()->colour_hex}}" class="circle icon"></i> {{ $ban->overturnedByUser->username }}
+                                <i style="color:{{$ban->overturnedByUser?->roles()->first()->colour_hex}}" class="circle icon"></i> {{ $ban->overturnedByUser?->username }}
                             </div>
                         </div>
                         <div class="item">
@@ -112,7 +112,7 @@
                     <div class="item">
                         <i class="user icon"></i>
                         <div class="content">
-                            <i style="color:{{$ban->responsibleUser->roles()->first()->colour_hex}}" class="circle icon"></i> {{ $ban->responsibleUser->username }}
+                            <i style="color:{{$ban->responsibleUser?->roles()->first()->colour_hex}}" class="circle icon"></i> {{ $ban->responsibleUser?->username }}
                         </div>
                     </div>
                 </div>
@@ -196,6 +196,10 @@
                     <a href="{{ route('site.image-attachments.create', ['attachable_type' => 'ModerationActions\\Ban', 'attachable_id' => $ban->id]) }}" class="ui fluid primary button" style="margin-top:1em;">Add Attachment</a>
                 </div>
             </div>
+
+            @can('delete', $ban)
+                <button onclick="openDeleteModal()" class="ui right floated red basic button"><i class="trash icon"></i> Delete ban</button>
+            @endcan
         </div>
     </div>
     @can('overturn', $ban)
@@ -225,6 +229,31 @@
                 $('#overturnModal')
                     .modal('toggle')
                 ;
+            }
+        </script>
+    @endcan
+    @can('delete', $ban)
+        <div id="deleteModal" class="ui basic modal">
+            <div class="header">Delete this ban</div>
+            <div class="content">
+                Are you sure? If you wish to overturn or mark a ban as appealed, use the <b>Overturn</b> function at the top of the page. Use this function for incorrectly added bans or removing clutter. The ban can be restored within 7 days if required.
+            </div>
+            <div class="actions">
+                <div class="ui basic cancel inverted button">
+                    Cancel
+                </div>
+                <form action="{{ route('site.moderation-actions.bans.delete', $ban) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="ui red button">
+                        Overturn
+                    </butto>
+                </form>
+             </div>
+        </div>
+        <script>
+            function openDeleteModal() {
+                $('#deleteModal')
+                    .modal('toggle')
             }
         </script>
     @endcan

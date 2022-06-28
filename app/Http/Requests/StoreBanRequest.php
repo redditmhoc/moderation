@@ -11,7 +11,7 @@ class StoreBanRequest extends FormRequest
         return [
             'reddit_username' => 'required',
             'discord_username' => 'nullable|regex:/^.{3,32}#[0-9]{4}$/',
-            'discord_id' => 'nullable|numeric',
+            'discord_id' => 'nullable|numeric|size:18',
             'aliases' => 'nullable',
             'start_at' => 'required|date',
             'end_at' => 'nullable|required_without:permanent|date|after:start_at',

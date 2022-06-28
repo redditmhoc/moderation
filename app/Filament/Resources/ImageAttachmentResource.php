@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ImageAttachmentResource\Pages;
 use App\Filament\Resources\ImageAttachmentResource\RelationManagers;
 use App\Models\ImageAttachment;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -24,8 +25,7 @@ class ImageAttachmentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')->label('UUID')->dehydrated(fn (Page $livewire) => $livewire instanceof CreateRecord),
-                Forms\Components\TextInput::make('user_id')
-                    ->maxLength(36),
+                Forms\Components\Select::make('user_id')->label('User')->options(User::all()->pluck('username', 'id'))->searchable(),
                 Forms\Components\TextInput::make('url')->label('URL'),
                 Forms\Components\TextInput::make('caption')
                     ->maxLength(255),

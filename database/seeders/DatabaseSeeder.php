@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\ModerationActions\Ban;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->count(10)->create();
+        Ban::factory()->count(50)->discordOnly()->create();
+        Ban::factory()->count(10)->permanent()->discordOnly()->create();
+        Ban::factory()->count(25);
+        Ban::factory()->count(5)->permanent()->create();
+        Ban::factory()->permanent()->cannotAppeal()->create();
     }
 }
