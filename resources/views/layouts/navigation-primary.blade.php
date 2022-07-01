@@ -16,7 +16,7 @@
                         <a href="{{ route('site.moderation-actions.mutes.create') }}" class="item">Mute</a>
                     @endcan
                     @can('create notes')
-                        <a href="#" class="item">Note</a>
+                        <a href="{{ route('site.notes.create') }}" class="item">Note</a>
                     @endcan
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div class="divider"></div>
                     <div class="header">Other</div>
                     @can('view notes')
-                        <a href="#" class="item">Notes</a>
+                        <a href="{{ route('site.notes.index') }}" class="item">Notes</a>
                     @endcan
                 </div>
             </div>

@@ -61,4 +61,17 @@
             @endforeach
         </div>
     @endif
+    @if ($noteResults)
+        <div class="ui medium header">{{ $noteResults->count() }} note{{ $noteResults->count() != 1 ? 's' : '' }}</div>
+        <div class="ui relaxed divided list">
+            @foreach($noteResults as $result)
+                <div class="item">
+                    <i class="large sticky note middle aligned icon"></i>
+                    <div class="content">
+                        <a href="{{ route('site.notes.show', $result) }}" class="header">{{ $result->reddit_username }}</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 </div>

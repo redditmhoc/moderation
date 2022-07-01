@@ -34,13 +34,13 @@
                     @endcan
                     <h3>Notes</h3>
                     @can('create notes')
-                        <a href="#" class="ui mhoc button">Create Note</a>
+                        <a href="{{ route('site.notes.create') }}" class="ui mhoc button">Create Note</a>
                     @endcan
                     @can('view moderation actions')
-                        <a href="#" class="ui button">View Notes</a>
+                        <a href="{{ route('site.notes.index') }}" class="ui button">View Notes</a>
                     @endcan
                     <h3>Information</h3>
-                    <a href="#" class="ui button">Guidance and Templates</a>
+                    <a onclick="alert('Not implemented yet, ask Quad')" class="ui button">Guidance and Templates</a>
                     <a onclick="toggleIssueReportModal()" class="ui button">Report bug/issue</a>
                 </div>
             </div>
