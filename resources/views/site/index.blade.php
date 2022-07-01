@@ -41,9 +41,23 @@
                     @endcan
                     <h3>Information</h3>
                     <a href="#" class="ui button">Guidance and Templates</a>
-                    <a href="#" class="ui button">Report bug/issue</a>
+                    <a onclick="toggleIssueReportModal()" class="ui button">Report bug/issue</a>
                 </div>
             </div>
         </div>
     </div>
+    <div id="issueReportModal" class="ui modal">
+        <i class="close icon"></i>
+        <div class="content">
+            <h3 class="ui header">Send issue report</h3>
+            <livewire:create-issue-report/>
+        </div>
+    </div>
+    <script>
+        function toggleIssueReportModal() {
+            $('#issueReportModal')
+                .modal('toggle')
+            ;
+        }
+    </script>
 @endsection

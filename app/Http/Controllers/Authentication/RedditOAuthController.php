@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -63,7 +64,8 @@ class RedditOAuthController extends Controller
             $token = json_decode((string)$response->getBody(), true);
 
         } catch (GuzzleException $e) {
-            dd($e);
+            Log::error($e);
+            return redirect()->to('/')->with('top-negative-msg', 'Authentication failed. Please report to Developers. (Exception time ' . now()->toDayDateTimeString() . ', message ' . $e->getMessage() . ')');
         }
 
         /**
@@ -77,7 +79,8 @@ class RedditOAuthController extends Controller
                 ]
             ]);
         } catch (GuzzleException $e) {
-            dd($e);
+            Log::error($e);
+            return redirect()->to('/')->with('top-negative-msg', 'Authentication failed. Please report to Developers. (Exception time ' . now()->toDayDateTimeString() . ', message ' . $e->getMessage() . ')');
         }
 
         /**
@@ -92,10 +95,10 @@ class RedditOAuthController extends Controller
                 'password' => null,
                 'password_enabled' => false
             ]);
+            Log::info("New user created ($user->username)");
         }
 
         Auth::login($user, true);
-
         return redirect('/');
     }
 }
