@@ -8,8 +8,6 @@ use App\Http\Requests\StoreBanRequest;
 use App\Http\Requests\UpdateBanRequest;
 use App\Models\ModerationActions\Ban;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BansController extends Controller

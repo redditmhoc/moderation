@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\IssueReportResource\Pages;
 
 use App\Filament\Resources\IssueReportResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateIssueReport extends CreateRecord

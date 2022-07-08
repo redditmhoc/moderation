@@ -62,7 +62,6 @@ class RedditOAuthController extends Controller
             ]);
 
             $token = json_decode((string)$response->getBody(), true);
-
         } catch (GuzzleException $e) {
             Log::error($e);
             return redirect()->to('/')->with('top-negative-msg', 'Authentication failed. Please report to Developers. (Exception time ' . now()->toDayDateTimeString() . ', message ' . $e->getMessage() . ')');

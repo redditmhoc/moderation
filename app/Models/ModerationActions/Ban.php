@@ -82,7 +82,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Ban extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory;
+    use SoftDeletes;
+    use LogsActivity;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -102,7 +104,9 @@ class Ban extends Model
      */
     public function getDurationInDaysAttribute(): ?int
     {
-        if (! $this->end_at) return null;
+        if (! $this->end_at) {
+            return null;
+        }
         return $this->start_at->diffInDays($this->end_at);
     }
 
@@ -123,7 +127,9 @@ class Ban extends Model
      */
     public function getDaysRemainingAttribute(): ?int
     {
-        if (! $this->is_current) return null;
+        if (! $this->is_current) {
+            return null;
+        }
         return $this->end_at->diffInDays(now());
     }
 

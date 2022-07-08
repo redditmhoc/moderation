@@ -28,7 +28,6 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
 });
 
 Route::prefix('site')->name('site')->middleware('can:access site')->group(function () {
-
     Route::get('/', function () {
         return view('site.index', ['_pageTitle' => 'Start']);
     })->name('.index');
@@ -58,7 +57,6 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
             Route::post('/{mute}/delete', 'delete')->name('.delete');
             Route::get('/{mute}', 'show')->name('.show');
         });
-
     });
 
     /** Notes */
@@ -77,7 +75,6 @@ Route::prefix('site')->name('site')->middleware('can:access site')->group(functi
     )->names([
         'create' => '.image-attachments.create', 'destroy' => '.image-attachments.destroy'
     ]);
-
 });
 
 /** Authentication */
@@ -89,14 +86,12 @@ Route::prefix('auth')->name('auth')->group(function () {
        /**
         * Reddit
         */
-       Route::prefix('reddit')->name('.reddit')->controller(RedditOAuthController::class)->group(function () {
-           Route::get('/login', 'login')->name('.login');
-           Route::get('/callback', 'callback')->name('.callback');
-       });
-
+        Route::prefix('reddit')->name('.reddit')->controller(RedditOAuthController::class)->group(function () {
+            Route::get('/login', 'login')->name('.login');
+            Route::get('/callback', 'callback')->name('.callback');
+        });
     });
 
     Route::get('/logout', LogoutController::class)->name('.logout');
-
 });
 Route::impersonate();

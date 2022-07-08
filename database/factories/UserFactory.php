@@ -35,5 +35,4 @@ class UserFactory extends Factory
             $user->syncRoles(['Moderator', 'Access']);
         });
     }
-
 }

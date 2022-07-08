@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoleResource\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Pages\Page;
@@ -13,8 +11,6 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use STS\FilamentImpersonate\Impersonate;
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreImageAttachmentRequest;
 use App\Models\ImageAttachment;
 use Illuminate\Http\Request;
 

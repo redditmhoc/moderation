@@ -49,7 +49,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Note extends Model
 {
-    use SoftDeletes, LogsActivity, HasFactory;
+    use SoftDeletes;
+    use LogsActivity;
+    use HasFactory;
 
     public $incrementing = false;
     protected $keyType = 'string';

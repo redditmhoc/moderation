@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\IssueReportResource\Pages;
-use App\Filament\Resources\IssueReportResource\RelationManagers;
 use App\Models\IssueReport;
 use App\Models\User;
 use Filament\Forms;
@@ -13,8 +12,6 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class IssueReportResource extends Resource
