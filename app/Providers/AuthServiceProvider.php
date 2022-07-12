@@ -5,12 +5,12 @@ namespace App\Providers;
 use App\Models\IssueReport;
 use App\Models\ModerationActions\Ban;
 use App\Models\ImageAttachment;
-use App\Models\Mute;
+use App\Models\ModerationActions\Mute;
 use App\Models\Note;
 use App\Policies\IssueReportPolicy;
 use App\Policies\ModerationActions\BanPolicy;
 use App\Policies\ImageAttachmentPolicy;
-use App\Policies\MutePolicy;
+use App\Policies\ModerationActions\MutePolicy;
 use App\Policies\NotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -28,7 +28,6 @@ class AuthServiceProvider extends ServiceProvider
         ImageAttachment::class => ImageAttachmentPolicy::class,
         IssueReport::class => IssueReportPolicy::class,
         Mute::class => MutePolicy::class,
-        App\Models\ModerationActions\Mute::class => \App\Policies\ModerationActions\MutePolicy::class,
         Note::class => NotePolicy::class,
     ];
 
