@@ -23,13 +23,13 @@
                         <a href="{{ route('site.moderation-actions.bans.show', $result) }}" class="header">{{ $result->reddit_username }}</a>
                         <div class="description">
                             @if ($result->permanent)
-                                Permanent ban, enacted {{ $result->start_at->diffForHumans() }}
+                                Permanent ban, enacted {{ $result->start_at->diffForHumans() }}, {{ $result->summary }}
                             @elseif ($result->overturned)
                                 Ban overturned
                             @elseif ($result->is_current)
-                                Current ban, enacted {{ $result->start_at->diffForHumans() }}, {{ $result->days_remaining }} days remaining
+                                Current ban, enacted {{ $result->start_at->diffForHumans() }}, {{ $result->days_remaining }} days remaining, {{ $result->summary }}
                             @else
-                                Ban expired
+                                Ban expired {{ $result->end_at->diffForHumans() }}, {{ $result->summary }}
                             @endif
                         </div>
                     </div>
@@ -51,9 +51,9 @@
                         <a href="{{ route('site.moderation-actions.mutes.show', $result) }}" class="header">{{ $result->reddit_username }}</a>
                         <div class="description">
                             @if ($result->is_current)
-                                Current mute, enacted {{ $result->start_at->diffForHumans() }}, {{ $result->hours_remaining }} hours remaining
+                                Current mute, enacted {{ $result->start_at->diffForHumans() }}, {{ $result->hours_remaining }} hours remaining, {{ $result->summary }}
                             @else
-                                Mute expired
+                                Mute expired {{ $result->end_at->diffForHumans() }}, {{ $result->summary }}
                             @endif
                         </div>
                     </div>
