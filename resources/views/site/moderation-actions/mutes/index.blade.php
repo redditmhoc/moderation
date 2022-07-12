@@ -9,7 +9,7 @@
                 </h1>
                 <a href="{{ route('site.moderation-actions.mutes.create') }}" class="ui right floated primary button">Create Mute</a>
 {{--                <a href="#" class="ui right floated button">Import Bans</a>--}}
-{{--                <a href="#" class="ui right floated button">Export Bans</a>--}}
+                <a onclick="toggleExportModal()" class="ui right floated button">Export Mutes</a>
             </div>
             <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="current">Current</a>
@@ -65,8 +65,20 @@
             </div>
         </div>
     </div>
+    <div id="exportModal" class="ui modal">
+        <i class="close icon"></i>
+        <div class="content">
+            <livewire:export-mutes-to-csv/>
+        </div>
+    </div>
     <script>
         $('.tabular.menu .item').tab();
+
+        function toggleExportModal() {
+            $('#exportModal')
+                .modal('toggle')
+            ;
+        }
     </script>
     <script defer>
         $(document).ready( function () {
