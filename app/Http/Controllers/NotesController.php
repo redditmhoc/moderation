@@ -13,6 +13,12 @@ class NotesController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Note::class);
+
+        // Log
+        activity('mod_action_access')
+            ->causedBy(auth()->user())
+            ->log('Accessed all notes list');
+
         return view('site.notes.index', [
             'notes' => Note::all(),
             '_pageTitle' => 'View Notes'
@@ -38,6 +44,13 @@ class NotesController extends Controller
     public function show(Note $note)
     {
         $this->authorize('view', $note);
+
+        // Log
+        activity('mod_action_access')
+            ->causedBy(auth()->user())
+            ->performedOn($note)
+            ->log('Accessed note');
+
         return view('site.notes.show', [
             'note' => $note,
             '_pageTitle' => "Note re: $note->reddit_username"

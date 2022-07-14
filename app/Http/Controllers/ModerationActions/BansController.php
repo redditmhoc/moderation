@@ -17,8 +17,13 @@ class BansController extends Controller
      */
     public function index()
     {
-        //Authorise
+        // Authorise
         $this->authorize('viewAny', Ban::class);
+
+        // Log
+        activity('mod_action_access')
+            ->causedBy(auth()->user())
+            ->log('Accessed all bans list');
 
         return view('site.moderation-actions.bans.index', [
             'currentBans' => Ban::current()->get(),
@@ -72,6 +77,12 @@ class BansController extends Controller
     {
         // Authorise
         $this->authorize('view', $ban);
+
+        //Log
+        activity('mod_action_access')
+            ->causedBy(auth()->user())
+            ->performedOn($ban)
+            ->log('Accessed ban');
 
         // Return view
         return view('site.moderation-actions.bans.show', [

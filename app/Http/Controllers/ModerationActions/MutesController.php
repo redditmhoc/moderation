@@ -17,6 +17,12 @@ class MutesController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Mute::class);
+
+        // Log
+        activity('mod_action_access')
+            ->causedBy(auth()->user())
+            ->log('Accessed all mutes list');
+
         return view('site.moderation-actions.mutes.index', [
             'currentMutes' => Mute::current()->get(),
             'expiredMutes' => Mute::expired()->get(),
@@ -50,6 +56,13 @@ class MutesController extends Controller
     public function show(Mute $mute)
     {
         $this->authorize('view', $mute);
+
+        // Log
+        activity('mod_action_access')
+            ->performedOn($mute)
+            ->causedBy(auth()->user())
+            ->log('Accessed mute');
+
         return view('site.moderation-actions.mutes.show', [
             'mute' => $mute,
             '_pageTitle' => "Mute of $mute->reddit_username"
