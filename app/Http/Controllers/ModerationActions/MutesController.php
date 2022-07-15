@@ -63,6 +63,10 @@ class MutesController extends Controller
             ->causedBy(auth()->user())
             ->log('Accessed mute');
 
+        // Eager loading
+        $mute->load('responsibleUser');
+        $mute->load('imageAttachments');
+
         return view('site.moderation-actions.mutes.show', [
             'mute' => $mute,
             '_pageTitle' => "Mute of $mute->reddit_username"

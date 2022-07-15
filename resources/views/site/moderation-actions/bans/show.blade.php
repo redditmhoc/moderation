@@ -123,16 +123,16 @@
                     <div class="item">
                         <i class="calendar icon"></i>
                         <div class="content">
-                            <div class="header">Started at</div>
-                            {{ $ban->start_at->toDayDateTimeString() }} GMT
+                            <div class="header">{{ $ban->start_at > now() ? 'Starts' : 'Started' }} at</div>
+                            {{ $ban->start_at->toDayDateTimeString() }} {{ $ban->start_at->timezoneAbbreviatedName }}
                         </div>
                     </div>
                     @if($ban->end_at)
                         <div class="item">
                             <i class="calendar icon"></i>
                             <div class="content">
-                                <div class="header">Ends at</div>
-                                {{ $ban->end_at->toDayDateTimeString() }} GMT
+                                <div class="header">{{ $ban->end_at > now() ? 'Ends' : 'Ended' }} at</div>
+                                {{ $ban->end_at->toDayDateTimeString() }} {{ $ban->start_at->timezoneAbbreviatedName }}
                             </div>
                         </div>
                         <div class="item">
@@ -142,7 +142,22 @@
                                 {{ $ban->duration_in_days }} days
                             </div>
                         </div>
+                        @if ($ban->overturned && $ban->permanent)
+                            <div class="item">
+                                <i class="info icon"></i>
+                                <div class="content">
+                                    <div class="header">Was permanent</div>
+                                </div>
+                            </div>
+                        @endif
                     @endif
+                    <div class="item">
+                        <i class="info icon"></i>
+                        <div class="content">
+                            <div class="header">Appeals</div>
+                            User {{ $ban->user_can_appeal ? 'can appeal' : 'cannot appeal' }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="ui dividing header">Reason</div>

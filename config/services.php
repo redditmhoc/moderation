@@ -31,4 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'discord' => [
+        'mod_channel_webhook' => env('MOD_DISCORD_WEBHOOK_URL')
+    ]
 ];

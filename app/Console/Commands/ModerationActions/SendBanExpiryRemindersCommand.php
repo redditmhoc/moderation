@@ -14,15 +14,25 @@ class SendBanExpiryRemindersCommand extends Command
 
     public function handle()
     {
-        $ban = Ban::current()->first();
+        $this->info('Finding expiring bans...');
 
-        $content = "The ban of {$ban->reddit_username} expires {$ban->end_at->diffForHumans()}. View here: " . route('site.moderation-actions.bans.show', $ban);
-        if (config('app.env') == '')
+        $expiringBans = Ban::current()
+            ->whereDate('end_at', '<', now()->addHours(48))
+            ->where('expiry_reminder_sent', false)
+            ->get();
 
-        Http::post('', [
-            'content' => $content,
-            'username' => 'Good news everyone!',
-            'avatar_url' => 'https://i.imgflip.com/73sbv.jpg'
-        ]);
+        $this->info(count($expiringBans) . ' expiring bans found.');
+
+        foreach ($expiringBans as $ban) {
+            $ban->update(['expiry_reminder_sent' => true, 'expiry_reminder_sent_at' => now()]);
+            $content = "The ban of {$ban->reddit_username} expires {$ban->end_at->diffForHumans()}. View here: " . route('site.moderation-actions.bans.show', $ban);
+            $webhookUrl = (config('app.env') == 'local' ? config('logging.channels.discord.url') : config('services.discord.mod_channel_webhook'));
+            Http::post($webhookUrl, [
+                'content' => $content,
+                'username' => 'Good news everyone!',
+                'avatar_url' => 'https://i.imgflip.com/73sbv.jpg'
+            ]);
+            $this->info('Send reminder for ban ' . $ban->id);
+        }
     }
 }

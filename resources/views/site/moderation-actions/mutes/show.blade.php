@@ -82,16 +82,16 @@
                     <div class="item">
                         <i class="calendar icon"></i>
                         <div class="content">
-                            <div class="header">Started at</div>
-                            {{ $mute->start_at->toDayDateTimeString() }} GMT
+                            <div class="header">{{ $mute->start_at > now() ? 'Starts' : 'Started' }} at</div>
+                            {{ $mute->start_at->toDayDateTimeString() }} {{ $mute->start_at->timezoneAbbreviatedName }}
                         </div>
                     </div>
                     @if($mute->end_at)
                         <div class="item">
                             <i class="calendar icon"></i>
                             <div class="content">
-                                <div class="header">Ends at</div>
-                                {{ $mute->end_at->toDayDateTimeString() }} GMT
+                                <div class="header">{{ $mute->end_at > now() ? 'Ends' : 'Ended' }} at</div>
+                                {{ $mute->end_at->toDayDateTimeString() }} {{ $mute->end_at->timezoneAbbreviatedName }}
                             </div>
                         </div>
                         <div class="item">

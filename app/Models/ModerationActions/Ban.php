@@ -4,7 +4,9 @@ namespace App\Models\ModerationActions;
 
 use App\Models\ImageAttachment;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,6 +81,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Query\Builder|Ban withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read int|null $activities_count
+ * @property int $expiry_reminder_sent
+ * @property string|null $expiry_reminder_sent_at
+ * @method static Builder|Ban whereExpiryReminderSent($value)
+ * @method static Builder|Ban whereExpiryReminderSentAt($value)
  */
 class Ban extends Model
 {
@@ -90,7 +96,7 @@ class Ban extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'reddit_username', 'discord_username', 'discord_id', 'aliases', 'start_at', 'end_at', 'responsible_user_id', 'summary', 'comments', 'evidence', 'permanent', 'platforms', 'user_can_appeal', 'overturned', 'overturned_reason', 'overturned_by_user_id', 'overturned_at'
+        'id', 'reddit_username', 'discord_username', 'discord_id', 'aliases', 'start_at', 'end_at', 'responsible_user_id', 'summary', 'comments', 'evidence', 'permanent', 'platforms', 'user_can_appeal', 'overturned', 'overturned_reason', 'overturned_by_user_id', 'overturned_at', 'expiry_reminder_sent', 'expiry_reminder_sent_at'
     ];
 
     protected $dates = [
@@ -182,7 +188,7 @@ class Ban extends Model
      */
     public function scopePermanent(Builder $query): Builder
     {
-        return $query->where('permanent', true);
+        return $query->where('permanent', true)->where('overturned', false);
     }
 
     /**

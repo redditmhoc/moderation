@@ -84,6 +84,13 @@ class BansController extends Controller
             ->performedOn($ban)
             ->log('Accessed ban');
 
+        // Eager loading
+        $ban->load('responsibleUser');
+        $ban->load('imageAttachments');
+        if ($ban->overturned) {
+            $ban->load('overturnedByUser');
+        }
+
         // Return view
         return view('site.moderation-actions.bans.show', [
             'ban' => $ban,
