@@ -18,6 +18,7 @@ return [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 
     'postmark' => [
@@ -30,15 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'reddit' => [
-        'client_id' => env('REDDIT_KEY'),
-        'client_secret' => env('REDDIT_SECRET'),
-        'redirect' => env('REDDIT_REDIRECT_URI')
-    ],
-
     'discord' => [
-        'webhooks' => [
-            'discord_mods' => env('DISCORD_MOD_CHNL_WEBHOOK')
-        ]
+        'mod_channel_webhook' => env('MOD_DISCORD_WEBHOOK_URL')
     ]
 ];

@@ -2,22 +2,11 @@
 
 namespace App\Console;
 
-use App\Models\Moderation\Actions\Ban;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
     /**
      * Define the application's command schedule.
      *
@@ -26,15 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        /* $schedule->call(function () {
-            Log::info('Looking for completed strikes...');
-            $activeBans = Ban::cursor()->filter(function ($ban) {
-                return $ban->current() && !$ban->permanent() && !$ban->overturn;
-            })->sortByDesc('start_timestamp');
-            Log::info('Found '. count($activeBans) .' active bans.');
-        })->everyMinute(); */
+        // $schedule->command('inspire')->hourly();
+        $schedule->command('telescope:prune --hours=48')->daily();
     }
 
     /**

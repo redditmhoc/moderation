@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\Authentication\LogoutController;
+use App\Http\Controllers\Authentication\RedditOAuthController;
+use App\Http\Controllers\ImageAttachmentsController;
+use App\Http\Controllers\ModerationActions\BansController;
+use App\Http\Controllers\ModerationActions\MutesController;
+use App\Http\Controllers\NotesController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,61 +19,79 @@
 |
 */
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('dash');
+/** Landing page */
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    if (auth()->check() && auth()->user()->can('access site') && ! $request->has('sR')) {
+        return redirect()->route('site.index');
     }
     return view('welcome');
-})->name('welcome');
-
-Route::get('test', function() {
-    Auth::login(App\Models\User::find(1));
 });
 
-Route::prefix('auth')->group(function () {
-    Route::get('login', 'AuthController@redditLogin')->name('auth.login');
-    Route::get('callback', 'AuthController@redditCallback')->name('auth.callback');
-    Route::get('logout', function() {
-        Auth::logout();
-        return redirect()->route('welcome');
-    })->name('auth.logout');
+Route::prefix('site')->name('site')->middleware('can:access site')->group(function () {
+    Route::get('/', function () {
+        return view('site.index', ['_pageTitle' => 'Start']);
+    })->name('.index');
+
+    /** Moderation actions */
+    Route::prefix('moderation-actions')->name('.moderation-actions')->middleware('can:view moderation actions')->group(function () {
+
+        /** Bans */
+        Route::prefix('bans')->name('.bans')->controller(BansController::class)->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/store', 'store')->name('.store');
+            Route::get('/{ban}/edit', 'edit')->name('.edit');
+            Route::post('/{ban}/edit', 'update')->name('.update');
+            Route::post('/{ban}/overturn', 'overturn')->name('.overturn');
+            Route::post('/{ban}/delete', 'delete')->name('.delete');
+            Route::get('/{ban}', 'show')->name('.show');
+        });
+
+        /** Mutes */
+        Route::prefix('mutes')->name('.mutes')->controller(MutesController::class)->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/store', 'store')->name('.store');
+            Route::get('/{mute}/edit', 'edit')->name('.edit');
+            Route::post('/{mute}/edit', 'update')->name('.update');
+            Route::post('/{mute}/delete', 'delete')->name('.delete');
+            Route::get('/{mute}', 'show')->name('.show');
+        });
+    });
+
+    /** Notes */
+    Route::prefix('notes')->name('.notes')->controller(NotesController::class)->group(function () {
+        Route::get('/', 'index')->name('.index');
+        Route::get('/create', 'create')->name('.create');
+        Route::post('/store', 'store')->name('.store');
+        Route::get('/{note}/edit', 'edit')->name('.edit');
+        Route::post('/{note}/edit', 'update')->name('.update');
+        Route::post('/{note}/delete', 'delete')->name('.delete');
+        Route::get('/{note}', 'show')->name('.show');
+    });
+
+    Route::resource('image-attachments', ImageAttachmentsController::class)->only(
+        ['create', 'destroy']
+    )->names([
+        'create' => '.image-attachments.create', 'destroy' => '.image-attachments.destroy'
+    ]);
 });
 
-Route::get('/dash', 'ViewsController@dash')->name('dash');
-Route::view('/guidance', 'guidance')->name('guidance')->middleware('permission:access');
-Route::prefix('actions')->group(function () {
-    Route::get('create/ban', 'Moderation\ActionsController@createBan')->middleware('permission:create ban')->name('actions.createban');
-    Route::post('create/ban', 'Moderation\ActionsController@createBanPost')->middleware('permission:create ban')->name('actions.createban.post');
-    Route::post('edit/ban/{reddit_username}/{id}', 'Moderation\ActionsController@editBanPost')->middleware('permission:edit actions')->name('actions.editban.post');
-    Route::get('view/bans', 'Moderation\ActionsController@viewAllBans')->middleware('permission:view actions')->name('actions.viewallbans');
-    Route::get('view/ban/{reddit_username}/{id}', 'Moderation\ActionsController@viewBan')->middleware('permission:view actions')->name('actions.viewban');
-    Route::post('overturn/ban/{reddit_username}/{id}', 'Moderation\ActionsController@overturnBan')->middleware('permission:overturn ban')->name('actions.overturnban');
-    Route::post('import/bans', 'Moderation\ActionsController@importBansFromFile')->middleware('role:admin')->name('actions.importbans');
-    Route::get('export/bans', 'Moderation\ActionsController@exportBans')->middleware('permission:view actions')->name('actions.exportbans');
-    Route::get('export/warnings', 'Moderation\ActionsController@exportWarnings')->middleware('permission:view actions')->name('actions.exportwarnings');
+/** Authentication */
+Route::prefix('auth')->name('auth')->group(function () {
 
-    Route::get('create/warning', 'Moderation\ActionsController@createWarning')->middleware('permission:create warning')->name('actions.createwarning');
-    Route::post('create/warning', 'Moderation\ActionsController@createWarningPost')->middleware('permission:create warning')->name('actions.createwarning.post');
-    Route::get('view/warnings', 'Moderation\ActionsController@viewAllWarnings')->middleware('permission:view actions')->name('actions.viewallwarnings');
-    Route::get('view/warning/{reddit_username}/{id}', 'Moderation\ActionsController@viewWarning')->middleware('permission:view actions')->name('actions.viewwarning');
-    Route::post('edit/warning/{reddit_username}/{id}', 'Moderation\ActionsController@editWarningPost')->middleware('permission:edit actions')->name('actions.editwarning.post');
-});
+   /** OAuth */
+    Route::prefix('oauth')->name('.oauth')->group(function () {
 
-Route::prefix('admin')->group(function () {
-    Route::get('permissions', 'AdminController@managePermissions')->middleware('role:Admin')->name('admin.managepermissions');
-    Route::post('permissions/assignrole', 'AdminController@assignRoleAjax')->middleware('role:Admin')->name('admin.assignrole');
-    Route::post('permissions/removerole', 'AdminController@removeRoleAjax')->middleware('role:Admin')->name('admin.removerole');
-    Route::post('permissions/searchuserinfo', 'AdminController@searchUserInfoAjax')->middleware('role:Admin')->name('admin.searchuserinfo');
-});
+       /**
+        * Reddit
+        */
+        Route::prefix('reddit')->name('.reddit')->controller(RedditOAuthController::class)->group(function () {
+            Route::get('/login', 'login')->name('.login');
+            Route::get('/callback', 'callback')->name('.callback');
+        });
+    });
 
-Route::prefix('speakership/lords')->group(function () {
-    Route::get('count-vote', 'Speakership\LordsController@countVote')->middleware('permission:commons tasks')->name('speakership.lords.countvote');
+    Route::get('/logout', LogoutController::class)->name('.logout');
 });
-
-Route::prefix('utility')->group(function () {
-    Route::post('checkuserhistory', 'Moderation\ActionsController@checkUserHistoryAjax')->middleware('permission:view actions')->name('utility.checkuserhistory');
-    Route::get('userdata', 'AuthController@getUserDataJson')->middleware('auth')->name('utility.userdata');
-});
-
-Route::prefix('public')->group(function () {
-});
+Route::impersonate();
