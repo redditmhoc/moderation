@@ -15,28 +15,38 @@ class NotePolicy
         //
     }
 
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('view notes');
+        return $user->can('view notes')
+            ? $this->allow()
+            : $this->deny();
     }
 
-    public function view(User $user, Note $note): bool
+    public function view(User $user, Note $note): \Illuminate\Auth\Access\Response
     {
-        return $user->can('view notes');
+        return $user->can('view notes')
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 
-    public function create(User $user): bool
+    public function create(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('create notes');
+        return $user->can('create notes')
+            ? $this->allow()
+            : $this->deny();
     }
 
-    public function update(User $user, Note $note): bool
+    public function update(User $user, Note $note): \Illuminate\Auth\Access\Response
     {
-        return $user->can('edit all notes') || $note->responsibleUser === $user;
+        return $user->can('edit all notes') || $note->responsibleUser === $user
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 
-    public function delete(User $user, Note $note): bool
+    public function delete(User $user, Note $note): \Illuminate\Auth\Access\Response
     {
-        return $user->can('delete all notes') || $note->responsibleUser === $user;
+        return $user->can('delete all notes') || $note->responsibleUser === $user
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 }

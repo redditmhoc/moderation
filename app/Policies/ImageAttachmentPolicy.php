@@ -15,18 +15,24 @@ class ImageAttachmentPolicy
         //
     }
 
-    public function create(User $user): bool
+    public function create(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('create image attachments');
+        return $user->can('create image attachments')
+            ? $this->allow()
+            : $this->deny();
     }
 
-    public function update(User $user, ImageAttachment $imageAttachment): bool
+    public function update(User $user, ImageAttachment $imageAttachment): \Illuminate\Auth\Access\Response
     {
-        return $user->can('create image attachments');
+        return $user->can('create image attachments')
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 
-    public function delete(User $user, ImageAttachment $imageAttachment): bool
+    public function delete(User $user, ImageAttachment $imageAttachment): \Illuminate\Auth\Access\Response
     {
-        return $user->can('delete image attachments');
+        return $user->can('delete image attachments')
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 }

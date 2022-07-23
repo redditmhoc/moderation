@@ -15,28 +15,38 @@ class MutePolicy
         //
     }
 
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('view moderation actions');
+        return $user->can('view moderation actions')
+            ? $this->allow()
+            : $this->deny();
     }
 
-    public function view(User $user): bool
+    public function view(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('view moderation actions');
+        return $user->can('view moderation actions')
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 
-    public function create(User $user): bool
+    public function create(User $user): \Illuminate\Auth\Access\Response
     {
-        return $user->can('create mutes');
+        return $user->can('create mutes')
+            ? $this->allow()
+            : $this->deny();
     }
 
-    public function update(User $user, Mute $mute): bool
+    public function update(User $user, Mute $mute): \Illuminate\Auth\Access\Response
     {
-        return $user->can('edit all mutes') || $mute->responsibleUser === $user;
+        return $user->can('edit all mutes') || $mute->responsibleUser === $user
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 
-    public function delete(User $user, Mute $mute): bool
+    public function delete(User $user, Mute $mute): \Illuminate\Auth\Access\Response
     {
-        return $user->can('delete all mutes') || $mute->responsibleUser === $user;
+        return $user->can('delete all mutes') || $mute->responsibleUser === $user
+            ? $this->allow()
+            : $this->denyAsNotFound();
     }
 }
