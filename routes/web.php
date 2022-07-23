@@ -92,6 +92,16 @@ Route::prefix('auth')->name('auth')->group(function () {
         });
     });
 
+    /** Development */
+    if (config('app.env') == 'local') {
+        Route::get('/dev/{username}', function (string $username) {
+           \Illuminate\Support\Facades\Auth::login(\App\Models\User::whereUsername($username)->firstOrFail());
+           return redirect()->route('site.index');
+        });
+    }
+
+    /** Logout */
     Route::get('/logout', LogoutController::class)->name('.logout');
 });
+
 Route::impersonate();
