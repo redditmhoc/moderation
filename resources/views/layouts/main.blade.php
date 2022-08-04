@@ -13,9 +13,12 @@
         <meta name="csrf-token" content="{{ csrf_token()}} ">
 
         <!--Jquery and Fomantic UI-->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+{{--        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>--}}
+{{--        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">--}}
+{{--        <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>--}}
+
+        <!--Styles-->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!--Flatpickr-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -30,7 +33,7 @@
         @livewireStyles
 
         <!--Custom styles-->
-        <style>
+        {{--<style>
             body {
                 /*background-color: #ededed;*/
                 display: flex;
@@ -69,10 +72,10 @@
             .ui.mhoc.button:active {
                 background-color: rgb(0, 80, 60) !important;
             }
-        </style>
+        </style>--}}
     </head>
-    <body>
-        <div id="site">
+    <body class="flex flex-col h-screen">
+        <div id="site" class="flex-grow">
             @if (session()->has('top-positive-msg') || session()->has('top-info-msg') || session()->has('top-negative-msg'))
                 <div class="ui container" style="margin-top: 20px;">
                     @if (session()->has('top-positive-msg'))
@@ -92,17 +95,17 @@
                     @endif
                 </div>
             @endif
-            @yield('content')
-        </div>
-        <div id="footer" class="ui inverted vertical footer segment">
-            <div class="ui container">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="eight wide column">
-                        {{ config('app.name') }} version {{ config('app.version') }}
-                    </div>
-                </div>
+            <div>
+                @yield('content')
             </div>
         </div>
+        <footer class="text-sm text-gray-100 bg-gray-800">
+            <div class="lg:mx-auto lg:max-w-6xl py-6 px-14">
+                <div class="flex flex-row space-x-5">
+                    <a class="hover:underline" href="#">{{ config('app.name') }} Version <livewire:current-version/></a>
+                </div>
+            </div>
+        </footer>
     </body>
     @yield('scripts')
     @livewireScripts

@@ -1,9 +1,9 @@
 @extends('layouts.main')
 @section('content')
-    <div class="ui middle aligned center aligned grid" style="margin: 4em 0em;">
+    <div class="ui middle aligned center aligned grid">
         <div class="five wide column">
             @auth
-                <p>Hi, {{Auth::user()->username}}!</p>
+                <p class="text-mhoc">Hi, {{Auth::user()->username}}!</p>
                 @can('access site')
                     <a href="{{ route('site.index') }}" class="ui primary button">Access site</a>
                     <a href="#" class="ui red button">Logout</a>

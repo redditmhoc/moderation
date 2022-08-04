@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\ModerationActions\Ban;
 use Livewire\Component;
 use Rap2hpoutre\FastExcel\FastExcel;
-use Spatie\SimpleExcel\SimpleExcelWriter;
 use Illuminate\Support\Facades\Storage;
 
 class ExportBansToCsv extends Component

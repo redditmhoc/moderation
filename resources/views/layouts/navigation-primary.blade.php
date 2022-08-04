@@ -1,113 +1,110 @@
-<div class="ui container" style="margin-top: 20px;">
-    <div class="ui secondary pointing menu">
-        <a href="{{ route('site.index') }}" class="{{Request::is('site') ? 'active' : ''}} item">
-            Start
-        </a>
-        @canany(['create bans', 'create mutes', 'create mutes'])
-            <div class="ui dropdown item">
-                Create
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="header">Select one</div>
-                    @can('create bans')
-                        <a href="{{ route('site.moderation-actions.bans.create') }}" class="item">Ban</a>
-                    @endcan
-                    @can('create mutes')
-                        <a href="{{ route('site.moderation-actions.mutes.create') }}" class="item">Mute</a>
-                    @endcan
-                    @can('create notes')
-                        <a href="{{ route('site.notes.create') }}" class="item">Note</a>
-                    @endcan
+<div x-data="{ searchModal: false }">
+    <div class="lg:mx-auto lg:max-w 6xl px-14 py-4">
+        <div class="hidden md:flex flex-row justify-between items-center items-stretch">
+            <div class="flex flex-row items-center items-stretch">
+                <div class="relative inline-block text-center appearance-none">
+                    <a href="{{ route('site.index') }}" class="navbar-btn {{Request::is('site') ? 'active' : ''}}">
+                        Start
+                    </a>
                 </div>
-            </div>
-        @endcanany
-        @canany(['view moderation actions', 'view notes'])
-            <div class="ui dropdown item">
-                Records
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="header">Moderation Actions</div>
-                    @can('view moderation actions')
-                        <a href="{{ route('site.moderation-actions.bans.index') }}" class="item">Bans</a>
-                        <a href="{{ route('site.moderation-actions.mutes.index') }}" class="item">Mutes</a>
-                    @endcan
-                    <div class="divider"></div>
-                    <div class="header">Other</div>
-                    @can('view notes')
-                        <a href="{{ route('site.notes.index') }}" class="item">Notes</a>
-                    @endcan
-                </div>
-            </div>
-        @endcanany
-        @role('Admin')
-        <div class="ui dropdown item">
-            Admin
-            <i class="dropdown icon"></i>
-            <div class="menu">
-                <a href="#" class="item">Manage Permissions</a>
-            </div>
-        </div>
-        @endrole
-        <div class="right menu">
-            <a onclick="toggleSearchModal()" class="ui item">
-                <i class="search icon"></i> Search user history
-            </a>
-            <div class="divider"></div>
-            @auth
-                <div href="#" class="ui dropdown item">
-                    <i class="user icon"></i> <b>{{Auth::user()->username}} @impersonating() (impersonating) @endImpersonating</b>
-                    <div class="menu">
-                        <div class="header">
-                            <i style="color:{{ auth()->user()->roles()->first()->colour_hex }}" class="circle icon"></i> {{ucfirst(auth()->user()->roles()->first()->name)}}
+                @canany(['create bans', 'create mutes', 'create mutes'])
+                    <div x-data="{ open: false }" class="relative inline-block text-center appearance-none">
+                        <button x-on:click="open = !open" class="navbar-btn">
+                            <div class="flex flex-row items-center">
+                                <span>Create</span>
+                                <span class="material-icons">arrow_drop_down</span>
+                            </div>
+                        </button>
+                        <div x-cloak x-show="open" @click.outside="open = false" role="menu" class="navbar-dropdown">
+                            <div class="navbar-dropdown-heading">Select one</div>
+                            @can('create bans')
+                                <a href="{{ route('site.moderation-actions.bans.create') }}" class="navbar-dropdown-item">Ban</a>
+                            @endcan
+                            @can('create mutes')
+                                <a href="{{ route('site.moderation-actions.mutes.create') }}" class="navbar-dropdown-item">Mute</a>
+                            @endcan
+                            @can('create notes')
+                                <a href="{{ route('site.notes.create') }}" class="navbar-dropdown-item">Note</a>
+                            @endcan
                         </div>
-                        <a id="viewDataModalB" class="item" href="#"><i class="user icon"></i> View Your Data</a>
-                        @hasanyrole('Administrator|Quadrumvirate')
-                            <a href="/filament" class="item"><i class="shield icon"></i> Administration</a>
-                        @endhasanyrole
-                        @impersonating
-                            <a href="{{ route('impersonate.leave') }}" class="item"><i class="key icon"></i> Leave impersonation</a>
-                        @endImpersonating
-                        <a href="{{ route('auth.logout') }}" class="item"><i class="key icon"></i> Logout</a>
                     </div>
+                @endcanany
+                @canany(['view moderation actions', 'view notes'])
+                    <div x-data="{ open: false }" class="relative inline-block text-center appearance-none">
+                        <button x-on:click="open = !open" class="navbar-btn">
+                            <div class="flex flex-row items-center">
+                                <span>Records</span>
+                                <span class="material-icons">arrow_drop_down</span>
+                            </div>
+                        </button>
+                        <div x-cloak x-show="open" @click.outside="open = false" role="menu" class="navbar-dropdown">
+                            <div class="navbar-dropdown-heading">Moderation Actions</div>
+                            @can('view moderation actions')
+                                <a href="{{ route('site.moderation-actions.bans.index') }}" class="navbar-dropdown-item">Bans</a>
+                                <a href="{{ route('site.moderation-actions.mutes.index') }}" class="navbar-dropdown-item">Mutes</a>
+                            @endcan
+                            <div class="navbar-dropdown-heading">Other</div>
+                            @can('view notes')
+                                <a href="{{ route('site.notes.index') }}" class="navbar-dropdown-item">Notes</a>
+                            @endcan
+                        </div>
+                    </div>
+                @endcanany
+            </div>
+            <div class="border-b-2 border-gray-300 flex-grow"></div>
+            <div class="flex flex-row items-center">
+                <div class="relative inline-block text-center appearance-none">
+                    <button x-on:click="searchModal = !searchModal" class="navbar-btn">
+                        <div class="flex flex-row items-center">
+                            <span class="material-icons">search</span>
+                            <span>Search users</span>
+                        </div>
+                    </button>
                 </div>
-            @endauth
+                @auth
+                    <div x-data="{ open: false }" class="relative inline-block text-center appearance-none">
+                        <button x-on:click="open = !open" class="navbar-btn">
+                            <div class="flex flex-row space-x-3 items-center">
+                                <span class="material-icons">account_circle</span>
+                                <span>{{ Auth::user()->username }} @impersonating() (impersonating) @endImpersonating</span>
+                            </div>
+                        </button>
+                        <div x-cloak x-show="open" @click.outside="open = false" role="menu" class="navbar-dropdown">
+                            <div class="navbar-dropdown-heading">
+                                <div class="flex flex-row space-x-3 items-center">
+                                    <div style="background-color:{{ auth()->user()->roles()->first()->colour_hex }}" class="circle icon"></div>
+                                    <span>{{ ucfirst(auth()->user()->roles()->first()->name) }}</span>
+                                </div>
+                            </div>
+                            @hasanyrole('Administrator|Quadrumvirate')
+                                <a href="/filament" class="navbar-dropdown-item">
+                                    <div class="flex flex-row space-x-3 items-center">
+                                        <span class="material-icons">admin_panel_settings</span>
+                                        <span>Admin Panel</span>
+                                    </div>
+                                </a>
+                            @endhasanyrole
+                            @impersonating
+                                <a href="{{ route('impersonate.leave') }}" class="navbar-dropdown-item">
+                                    <div class="flex flex-row space-x-3 items-center">
+                                        <span class="material-icons">logout</span>
+                                        <span>Leave impersonation</span>
+                                    </div>
+                                </a>
+                            @endImpersonating
+                            <a href="{{ route('auth.logout') }}" class="navbar-dropdown-item hover:bg-red-600">
+                                <div class="flex flex-row space-x-3 items-center">
+                                    <span class="material-icons">logout</span>
+                                    <span>Logout</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                @endauth
+            </div>
         </div>
     </div>
-</div>
-<div id="searchModal" class="ui modal">
-    <i class="close icon"></i>
-    <div class="content">
-        <h3 class="ui header">Search for bans or mutes by username</h3>
+    <x-modal alpine-show="searchModal">
         <livewire:search-user-history/>
-    </div>
+    </x-modal>
 </div>
-@section('scripts')
-    <script defer>
-        $('.ui.dropdown')
-            .dropdown()
-        ;
-
-        $('.menu .item')
-            .tab()
-        ;
-
-        function toggleSearchModal() {
-            $('#searchModal')
-                .modal('toggle')
-            ;
-        }
-
-
-        $(document).on("click", "#viewDataModalB", function(){
-            $('#viewDataModal')
-                .modal('show')
-            ;
-        });
-
-        $(document).on("click", "#viewUserHistoryB", function(){
-            $('#userHistoryModal')
-                .modal('show')
-            ;
-        });
-    </script>
-@endsection

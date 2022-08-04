@@ -18,9 +18,12 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     /**
-     * Application version
+     * GitHub Info
      */
-    'version' => env('APP_VERSION', '???'),
+    'github' => [
+        'organisation_name' => env('GITHUB_ORGANISATION'),
+        'repository_name' => env('GITHUB_REPOSITORY')
+    ],
 
     /*
     |--------------------------------------------------------------------------
