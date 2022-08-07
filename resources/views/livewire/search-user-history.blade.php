@@ -1,8 +1,8 @@
-<div class="p-4">
-    <div class="flex flex-row w-full">
-        <input class="flex-grow" wire:model.defer="query" type="text" placeholder="Don't include the /u/ tag (e.g. Padanub)">
-        <button wire:loading.class="disabled loading" wire:click="search" class="bg-mhoc text-white hover:bg-mhoc-400 rounded-tr-md rounded-br-md transition px-2 justify-end">
-            <span class="material-icons">search</span>
+<div>
+    <div class="ui fluid action icon input">
+        <input wire:model.defer="query" type="text" placeholder="Don't include the /u/ tag (e.g. Padanub)">
+        <button wire:loading.class="disabled loading" wire:click="search" class="ui mhoc icon button">
+            <i class="search icon"></i>
         </button>
     </div>
     @if ($banResults)

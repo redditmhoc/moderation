@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] { display: none !important; }
+
+html {
+    font-size: 14px;
+}
+
+a {
+    -webkit-appearance: none !important;
+}
+
+.navbar-btn {
+    @apply h-full items-center inline-flex items-center cursor-pointer text-gray-900 px-6 hover:text-mhoc transition border-b-2 border-gray-300 hover:border-mhoc py-2;
+}
+
+.navbar-btn-dark {
+    @apply text-gray-100 hover:text-mhoc;
+}
+
+.navbar-btn-outline {
+    @apply py-1.5 px-4 border-gray-900 hover:border-mhoc border-2 rounded-md text-sm;
+}
+
+.navbar-btn-outline.navbar-btn-dark {
+    @apply border-gray-100 hover:border-mhoc;
+}
+
+.navbar-btn-outline .flex.flex-row {
+    @apply items-center;
+}
+
+.navbar-btn.active {
+    @apply border-mhoc text-mhoc font-bold;
+}
+
+.navbar-dropdown {
+    @apply origin-top-left absolute left-0 w-56 bg-white mt-3 shadow-lg;
+}
+
+.navbar-dropdown-item {
+    @apply block px-4 py-2 text-sm text-gray-800 hover:text-white hover:bg-mhoc text-left;
+}
+
+.navbar-dropdown-heading {
+    @apply block px-4 pb-1 pt-2 text-xs text-gray-500 my-2 text-left uppercase;
+}
+
+.btn-primary {
+    @apply px-4 py-2 bg-mhoc text-white hover:bg-mhoc appearance-none transition;
+}
+
+.btn-primary.btn-primary-dark {
+    @apply bg-transparent text-white border border-mhoc hover:bg-mhoc hover:text-white active:bg-mhoc rounded-md;
+}
+
+code {
+    @apply bg-gray-100 p-1 rounded;
+}
+
+.circle.icon {
+    @apply rounded-full w-4 h-4
+}

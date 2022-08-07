@@ -12,11 +12,13 @@
         <link rel="shortcut icon" href="https://commonslibrary.parliament.uk/wp-content/uploads/2016/08/Logo.png" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token()}} ">
 
-        <!--Jquery-->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js">
+        <!--Jquery and Fomantic UI-->
+{{--        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>--}}
+{{--        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">--}}
+{{--        <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>--}}
 
         <!--Styles-->
-        @vite(['resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!--Flatpickr-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -24,7 +26,7 @@
 
         <!--DataTables-->
         <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.semanticui.min.css">
         <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
         <!-- Livewire -->
@@ -72,10 +74,10 @@
             }
         </style>--}}
     </head>
-    <body class="d-flex flex-column vh-100">
-        <div id="site" class="flex-shrink-0">
+    <body class="flex flex-col h-screen">
+        <div id="site" class="flex-grow">
             @if (session()->has('top-positive-msg') || session()->has('top-info-msg') || session()->has('top-negative-msg'))
-                <div class="container" style="margin-top: 20px;">
+                <div class="ui container" style="margin-top: 20px;">
                     @if (session()->has('top-positive-msg'))
                         <div class="ui positive message">
                             {{ session('top-positive-msg') }}
@@ -97,10 +99,10 @@
                 @yield('content')
             </div>
         </div>
-        <footer class="mt-auto py-4 text-bg-dark">
-            <div class="container">
-                <div class="d-flex flex-row">
-                    <span>{{ config('app.name') }} Version <livewire:current-version/></span>
+        <footer class="text-sm text-gray-100 bg-gray-800">
+            <div class="lg:mx-auto lg:max-w-6xl py-6 px-14">
+                <div class="flex flex-row space-x-5">
+                    <a class="hover:underline" href="#">{{ config('app.name') }} Version <livewire:current-version/></a>
                 </div>
             </div>
         </footer>
