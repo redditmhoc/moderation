@@ -6,9 +6,9 @@
 
 [x-cloak] { display: none !important; }
 
-html {
-    font-size: 14px;
-}
+/*html {*/
+/*    font-size: 14px;*/
+/*}*/
 
 a {
     -webkit-appearance: none !important;
@@ -39,7 +39,7 @@ a {
 }
 
 .navbar-dropdown {
-    @apply origin-top-left absolute left-0 w-56 bg-white mt-3 shadow-lg;
+    @apply origin-top-left absolute left-0 w-56 bg-white mt-3 shadow-lg z-40;
 }
 
 .navbar-dropdown-item {
@@ -50,18 +50,8 @@ a {
     @apply block px-4 pb-1 pt-2 text-xs text-gray-500 my-2 text-left uppercase;
 }
 
-.btn-primary {
-    @apply px-4 py-2 bg-mhoc text-white hover:bg-mhoc appearance-none transition;
-}
-
-.btn-primary.btn-primary-dark {
-    @apply bg-transparent text-white border border-mhoc hover:bg-mhoc hover:text-white active:bg-mhoc rounded-md;
-}
-
-code {
-    @apply bg-gray-100 p-1 rounded;
-}
-
-.circle.icon {
-    @apply rounded-full w-4 h-4
+.modal {
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
 }

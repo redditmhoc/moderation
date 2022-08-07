@@ -5,6 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@tailwindcss/typography": "^0.5.4",
         "autoprefixer": "^10.4.8",
         "axios": "^0.25",
         "laravel-mix": "^6.0.6",
@@ -15,6 +16,7 @@
         "vite": "^3.0.2"
     },
     "dependencies": {
-        "alpinejs": "^3.10.3"
+        "alpinejs": "^3.10.3",
+        "daisyui": "^2.22.0"
     }
 }

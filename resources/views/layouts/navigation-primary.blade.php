@@ -1,4 +1,4 @@
-<div x-data="{ searchModal: false }">
+<div x-data="{ searchModal: true }">
     <div class="lg:mx-auto lg:max-w 6xl px-14 py-4">
         <div class="hidden md:flex flex-row justify-between items-center items-stretch">
             <div class="flex flex-row items-center items-stretch">
@@ -77,20 +77,20 @@
                                 </div>
                             </div>
                             @hasanyrole('Administrator|Quadrumvirate')
-                                <a href="/filament" class="navbar-dropdown-item">
-                                    <div class="flex flex-row space-x-3 items-center">
-                                        <span class="material-icons">admin_panel_settings</span>
-                                        <span>Admin Panel</span>
-                                    </div>
-                                </a>
+                            <a href="/filament" class="navbar-dropdown-item">
+                                <div class="flex flex-row space-x-3 items-center">
+                                    <span class="material-icons">admin_panel_settings</span>
+                                    <span>Admin Panel</span>
+                                </div>
+                            </a>
                             @endhasanyrole
                             @impersonating
-                                <a href="{{ route('impersonate.leave') }}" class="navbar-dropdown-item">
-                                    <div class="flex flex-row space-x-3 items-center">
-                                        <span class="material-icons">logout</span>
-                                        <span>Leave impersonation</span>
-                                    </div>
-                                </a>
+                            <a href="{{ route('impersonate.leave') }}" class="navbar-dropdown-item">
+                                <div class="flex flex-row space-x-3 items-center">
+                                    <span class="material-icons">logout</span>
+                                    <span>Leave impersonation</span>
+                                </div>
+                            </a>
                             @endImpersonating
                             <a href="{{ route('auth.logout') }}" class="navbar-dropdown-item hover:bg-red-600">
                                 <div class="flex flex-row space-x-3 items-center">
