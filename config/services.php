@@ -32,6 +32,8 @@ return [
     ],
 
     'discord' => [
-        'mod_channel_webhook' => env('MOD_DISCORD_WEBHOOK_URL')
+        'webhooks' => [
+            'mod_channel' => env('DISCORD_MOD_CHNL_ID')
+        ]
     ]
 ];

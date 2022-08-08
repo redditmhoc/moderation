@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a98d70ccf57010d8a89026a6c907883",
+    "content-hash": "ac5fa4278f9295debc20b7fb5d7cafa2",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -7064,6 +7064,61 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "woeler/phpdiscord",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Woeler/discord-php.git",
+                "reference": "ae6036063b78d9d43f4b6e55936ee1ff3c27c11b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Woeler/discord-php/zipball/ae6036063b78d9d43f4b6e55936ee1ff3c27c11b",
+                "reference": "ae6036063b78d9d43f4b6e55936ee1ff3c27c11b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Woeler\\DiscordPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Woeler",
+                    "email": "woeler@woeler.eu"
+                }
+            ],
+            "description": "A php library to use Discord webhooks and embeds.",
+            "support": {
+                "issues": "https://github.com/Woeler/discord-php/issues",
+                "source": "https://github.com/Woeler/discord-php/tree/4.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://woeler.tech",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Woeler",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-10T09:05:01+00:00"
         },
         {
             "name": "z3d0x/filament-logger",
