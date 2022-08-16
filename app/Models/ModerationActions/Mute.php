@@ -65,6 +65,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Query\Builder|Mute withoutTrashed()
  * @mixin \Eloquent
  * @method static \Database\Factories\ModerationActions\MuteFactory factory(...$parameters)
+ * @property-read int|null $duration_in_hours
  */
 class Mute extends Model
 {
@@ -90,10 +91,17 @@ class Mute extends Model
      */
     public function getDurationInDaysAttribute(): ?int
     {
-        if (! $this->end_at) {
-            return null;
-        }
-        return $this->start_at->diffInDays($this->end_at);
+        return !$this->end_at ? null : $this->start_at->diffInDays($this->end_at);
+    }
+
+    /**
+     * Return the mute length in hours.
+     *
+     * @return int|null
+     */
+    public function getDurationInHoursAttribute(): ?int
+    {
+        return !$this->end_at ? null : $this->start_at->diffInHours($this->end_at);
     }
 
     /**

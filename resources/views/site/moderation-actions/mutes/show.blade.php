@@ -98,7 +98,7 @@
                             <i class="calendar icon"></i>
                             <div class="content">
                                 <div class="header">Total duration</div>
-                                {{ $mute->hours_remaining }} hours
+                                {{ $mute->duration_in_hours }} hours
                             </div>
                         </div>
                     @endif
@@ -175,7 +175,7 @@
                     @csrf
                     <button type="submit" class="ui red button">
                         Delete
-                    </butto>
+                    </button>
                 </form>
              </div>
         </div>
