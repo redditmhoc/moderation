@@ -1,5 +1,5 @@
 <div class="ui container" style="margin-top: 20px;">
-    <div class="ui secondary pointing menu">
+    <div class="ui secondary pointing stackable menu">
         <a href="{{ route('site.index') }}" class="{{Request::is('site') ? 'active' : ''}} item">
             Start
         </a>
@@ -74,7 +74,7 @@
         </div>
     </div>
 </div>
-<div id="searchModal" class="ui modal">
+<div id="searchModal" class="ui container modal">
     <i class="close icon"></i>
     <div class="content">
         <h3 class="ui header">Search for bans or mutes by username</h3>
