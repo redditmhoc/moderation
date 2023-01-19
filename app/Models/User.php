@@ -59,6 +59,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
