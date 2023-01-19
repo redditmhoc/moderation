@@ -25,6 +25,6 @@ class StoreMuteRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()->can('create mutes');
+        return ($this->user()->can('create mutes') || $this->user()->tokenCan('mutes-read'));
     }
 }
